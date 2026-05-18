@@ -234,7 +234,7 @@ function GhostButton({ children, className = "", onClick, type = "button" }) {
 }
 
 export default function FruitJuiceWholesaleOrderPage() {
-  const [mode, setMode] = useState("store");
+  const [route, setRoute] = useState(() => window.location.pathname);
   const [section, setSection] = useState(null);
   const [items, setItems] = useState([...initialJuiceItems, ...initialFruitItems]);
   const [orders, setOrders] = useState(sampleOrders);
@@ -308,14 +308,15 @@ export default function FruitJuiceWholesaleOrderPage() {
     setCheckout(false);
   }
 
-  function goAdmin() {
-    setMode("admin");
+  function navigateTo(path) {
+    window.history.pushState({}, "", path);
+    setRoute(path);
     setSection(null);
     setCheckout(false);
   }
 
   function goStore() {
-    setMode("store");
+    navigateTo("/");
   }
 
   function submitOrder(orderData) {
@@ -336,7 +337,17 @@ export default function FruitJuiceWholesaleOrderPage() {
     alert("訂單已送出，後台可以看到這筆訂單。這是前端示範版，正式上線需接資料庫。水果不會自己送到，但訂單會乖乖排隊。🍊");
   }
 
-  if (mode === "admin") {
+  const isAdminRoute = route.startsWith("/admin");
+
+  useEffect(() => {
+    function handlePopState() {
+      setRoute(window.location.pathname);
+    }
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  if (isAdminRoute) {
     return (
       <AdminApp
         isAdminLoggedIn={isAdminLoggedIn}
@@ -372,7 +383,7 @@ export default function FruitJuiceWholesaleOrderPage() {
                 </div>
               </div>
             </Card>
-            <button className="text-sm font-semibold text-slate-500 hover:text-slate-900" onClick={goAdmin}>後台登入</button>
+
           </div>
         </header>
 
