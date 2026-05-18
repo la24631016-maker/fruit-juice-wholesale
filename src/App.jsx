@@ -1028,13 +1028,58 @@ function AdminApp({ isAdminLoggedIn, setIsAdminLoggedIn, goStore, orders, setOrd
   const [loginError, setLoginError] = useState("");
   const [tab, setTab] = useState("orders");
 
-  function login(event) {
+  useEffect(() => {
+    async function checkLogin() {
+      try {
+        const response = await fetch("/api/me");
+        const result = await response.json();
+
+        if (response.ok && result.ok) {
+          setIsAdminLoggedIn(true);
+        }
+      } catch (error) {
+        setIsAdminLoggedIn(false);
+      }
+    }
+
+    checkLogin();
+  }, [setIsAdminLoggedIn]);
+
+  async function login(event) {
     event.preventDefault();
-    if (loginForm.account === "admin" && loginForm.password === "1234") {
+    setLoginError("");
+
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: loginForm.account,
+          password: loginForm.password,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.ok) {
+        setLoginError(result.message || "帳號或密碼錯誤，請重新輸入。");
+        return;
+      }
+
       setIsAdminLoggedIn(true);
       setLoginError("");
-    } else {
-      setLoginError("帳號或密碼錯誤。測試帳號：admin，密碼：1234");
+    } catch (error) {
+      setLoginError("登入失敗，請稍後再試。");
+    }
+  }
+
+  async function logout() {
+    try {
+      await fetch("/api/logout", { method: "POST" });
+    } finally {
+      setIsAdminLoggedIn(false);
     }
   }
 
@@ -1059,7 +1104,7 @@ function AdminApp({ isAdminLoggedIn, setIsAdminLoggedIn, goStore, orders, setOrd
                 <label className="mb-2 block text-sm font-bold text-black">帳號</label>
                 <input
                   className="w-full rounded-2xl border border-slate-400 bg-white px-4 py-3 text-base font-bold text-black outline-none placeholder:text-slate-500 focus:border-black"
-                  placeholder="admin"
+                  placeholder="請輸入帳號"
                   value={loginForm.account}
                   onChange={(event) => setLoginForm((prev) => ({ ...prev, account: event.target.value }))}
                 />
@@ -1070,7 +1115,7 @@ function AdminApp({ isAdminLoggedIn, setIsAdminLoggedIn, goStore, orders, setOrd
                 <input
                   className="w-full rounded-2xl border border-slate-400 bg-white px-4 py-3 text-base font-bold text-black outline-none placeholder:text-slate-500 focus:border-black"
                   type="password"
-                  placeholder="1234"
+                  placeholder="請輸入密碼"
                   value={loginForm.password}
                   onChange={(event) => setLoginForm((prev) => ({ ...prev, password: event.target.value }))}
                 />
@@ -1084,8 +1129,8 @@ function AdminApp({ isAdminLoggedIn, setIsAdminLoggedIn, goStore, orders, setOrd
             </form>
 
             <div className="mt-5 rounded-2xl border border-slate-300 bg-slate-50 p-3 text-sm font-bold text-black">
-              測試帳號：admin<br />
-              測試密碼：1234
+              後台僅供管理人員使用。<br />
+              請勿將帳號密碼提供給非相關人員。
             </div>
           </div>
         </div>
@@ -1114,7 +1159,7 @@ function AdminApp({ isAdminLoggedIn, setIsAdminLoggedIn, goStore, orders, setOrd
             </div>
             <div className="flex gap-2">
               <button className="rounded-2xl border border-slate-400 bg-white px-4 py-2 text-sm font-bold text-black hover:bg-slate-100" onClick={goStore}>回前台</button>
-              <button className="rounded-2xl border border-slate-400 bg-white px-4 py-2 text-sm font-bold text-black hover:bg-slate-100" onClick={() => setIsAdminLoggedIn(false)}>登出</button>
+              <button className="rounded-2xl border border-slate-400 bg-white px-4 py-2 text-sm font-bold text-black hover:bg-slate-100" onClick={logout}>登出</button>
             </div>
           </div>
         </header>
@@ -1563,7 +1608,7 @@ function SettingsPanel() {
       <h2 className="mb-4 text-xl font-bold text-black">後台設定</h2>
       <div className="space-y-3 text-sm font-bold text-black">
         <div className="rounded-2xl border border-slate-300 bg-slate-50 p-4">
-          登入方式：前端示範登入，帳號 admin / 密碼 1234。
+          登入方式：目前為前端暫時登入。正式營運建議改為後端驗證或 Vercel 保護。
         </div>
         <div className="rounded-2xl border border-slate-300 bg-slate-50 p-4">
           正式上線提醒：登入驗證、訂單保存、商品資料都需要接後端與資料庫。
