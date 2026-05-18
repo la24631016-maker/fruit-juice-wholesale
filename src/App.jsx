@@ -334,7 +334,7 @@ export default function FruitJuiceWholesaleOrderPage() {
     setOrders((prev) => [newOrder, ...prev]);
     clearCart();
     setSection(null);
-    alert("訂單已送出，後台可以看到這筆訂單。這是前端示範版，正式上線需接資料庫。水果不會自己送到，但訂單會乖乖排隊。🍊");
+    alert("訂單已送出，感謝您的訂購！我們會盡快與您確認訂單內容與配送資訊。");
   }
 
   const isAdminRoute = route.startsWith("/admin");
