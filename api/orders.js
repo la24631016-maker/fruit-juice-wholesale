@@ -66,24 +66,22 @@ export default async function handler(req, res) {
     const supabase = createSupabaseAdmin();
     const orderNo = createOrderNo();
 
-    const { data, error } = await supabase
-      .from("orders")
-      .insert({
-        order_no: orderNo,
-        customer: {
-          name: customerName,
-          phone,
-          address,
-        },
-        items,
-        total: totalAmount,
-        total_qty: totalQty,
-        payment: body.payment || "貨到付款",
-        status: "待確認",
-        note: body.note || "",
-      })
-      .select()
-      .single();
+    const { error } = await supabase
+  .from("orders")
+  .insert({
+    order_no: orderNo,
+    customer: {
+      name: customerName,
+      phone,
+      address,
+    },
+    items,
+    total: totalAmount,
+    total_qty: totalQty,
+    payment: body.payment || "貨到付款",
+    status: "待確認",
+    note: body.note || "",
+  });
 
     if (error) {
       console.error("Supabase insert error:", error);
