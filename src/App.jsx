@@ -967,10 +967,7 @@ function CheckoutForm({ selectedItems, totalAmount, payment, setPayment, buttonC
         {showBankInfo && (
           <div className="rounded-2xl border border-blue-100 bg-blue-50 p-4 text-sm text-blue-900">
             <div className="mb-2 font-bold">💳 匯款資訊</div>
-            <p>華南商業銀行 五權分行</p>
-            <p>銀行代號：008</p>
-            <p>帳號：427200419913</p>
-            <p>戶名：楊云婷</p>
+            <p>匯款資訊待確認後提供。</p>
           </div>
         )}
 
