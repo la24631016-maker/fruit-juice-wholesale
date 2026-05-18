@@ -125,36 +125,7 @@ const fruitSlides = [
   },
 ];
 
-const sampleOrders = [
-  {
-    id: "ORD-20260508-001",
-    createdAt: "2026-05-08 10:30",
-    customerName: "木沐早午餐",
-    phone: "0912-345-678",
-    address: "台中市西區範例路 88 號",
-    payment: "匯款付款",
-    status: "待確認",
-    items: [
-      { name: "柳丁汁", spec: "750ml / 瓶", qty: 6, price: 80 },
-      { name: "百香果汁（有籽）", spec: "750ml / 瓶", qty: 4, price: 120 },
-    ],
-    note: "上午配送，需開收據",
-  },
-  {
-    id: "ORD-20260508-002",
-    createdAt: "2026-05-08 11:15",
-    customerName: "林小姐",
-    phone: "0988-888-888",
-    address: "台中市南屯區健康路 18 號",
-    payment: "貨到付款",
-    status: "備貨中",
-    items: [
-      { name: "香蕉", spec: "一箱 / 約13kg", qty: 2, price: 520 },
-      { name: "芭樂", spec: "一箱 / 約20kg", qty: 1, price: 680 },
-    ],
-    note: "下午 3 點後可收貨",
-  },
-];
+const sampleOrders = [];
 
 function formatCurrency(value) {
   return new Intl.NumberFormat("zh-TW", {
@@ -319,53 +290,53 @@ export default function FruitJuiceWholesaleOrderPage() {
     navigateTo("/");
   }
 
- async function submitOrder(orderData) {
-  if (selectedItems.length === 0) {
-    alert("請先選擇品項再送出訂單。");
-    return;
-  }
-
-  const orderPayload = {
-    customerName: orderData.customerName || "未填寫",
-    phone: orderData.phone || "未填寫",
-    address: orderData.address || "未填寫",
-    payment: payment === "transfer" ? "匯款付款" : "貨到付款",
-    note: orderData.note || "",
-    items: selectedItems.map((item) => ({
-      id: item.id,
-      name: item.name,
-      spec: item.spec,
-      qty: item.qty,
-      price: item.price,
-      subtotal: item.qty * item.price,
-    })),
-    totalQty,
-    totalAmount,
-  };
-
-  try {
-    const response = await fetch("/api/orders", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(orderPayload),
-    });
-
-    const result = await response.json();
-
-    if (!response.ok || !result.ok) {
-      alert(result.message || "訂單送出失敗，請稍後再試。");
+  async function submitOrder(orderData) {
+    if (selectedItems.length === 0) {
+      alert("請先選擇品項再送出訂單。");
       return;
     }
 
-    clearCart();
-    setSection(null);
-    alert("訂單已送出，感謝您的訂購！我們會盡快與您確認訂單內容與配送資訊。");
-  } catch (error) {
-    alert("訂單送出失敗，請確認網路後再試一次。");
+    const orderPayload = {
+      customerName: orderData.customerName || "未填寫",
+      phone: orderData.phone || "未填寫",
+      address: orderData.address || "未填寫",
+      payment: payment === "transfer" ? "匯款付款" : "貨到付款",
+      note: orderData.note || "",
+      items: selectedItems.map((item) => ({
+        id: item.id,
+        name: item.name,
+        spec: item.spec,
+        qty: item.qty,
+        price: item.price,
+        subtotal: item.qty * item.price,
+      })),
+      totalQty,
+      totalAmount,
+    };
+
+    try {
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderPayload),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.ok) {
+        alert(result.message || "訂單送出失敗，請稍後再試。");
+        return;
+      }
+
+      clearCart();
+      setSection(null);
+      alert("訂單已送出，感謝您的訂購！我們會盡快與您確認訂單內容與配送資訊。");
+    } catch (error) {
+      alert("訂單送出失敗，請確認網路後再試一次。");
+    }
   }
-}
 
   const isAdminRoute = route.startsWith("/admin");
 
@@ -1053,6 +1024,30 @@ function AdminApp({ isAdminLoggedIn, setIsAdminLoggedIn, goStore, orders, setOrd
   const [loginForm, setLoginForm] = useState({ account: "", password: "" });
   const [loginError, setLoginError] = useState("");
   const [tab, setTab] = useState("orders");
+  const [ordersLoading, setOrdersLoading] = useState(false);
+  const [ordersError, setOrdersError] = useState("");
+
+  async function loadOrders() {
+    if (!isAdminLoggedIn) return;
+    setOrdersLoading(true);
+    setOrdersError("");
+
+    try {
+      const response = await fetch("/api/admin-orders");
+      const result = await response.json();
+
+      if (!response.ok || !result.ok) {
+        setOrdersError(result.message || "訂單讀取失敗");
+        return;
+      }
+
+      setOrders(result.orders || []);
+    } catch (error) {
+      setOrdersError("訂單讀取失敗，請稍後再試。");
+    } finally {
+      setOrdersLoading(false);
+    }
+  }
 
   useEffect(() => {
     async function checkLogin() {
@@ -1108,6 +1103,12 @@ function AdminApp({ isAdminLoggedIn, setIsAdminLoggedIn, goStore, orders, setOrd
       setIsAdminLoggedIn(false);
     }
   }
+
+  useEffect(() => {
+    if (isAdminLoggedIn) {
+      loadOrders();
+    }
+  }, [isAdminLoggedIn]);
 
   if (!isAdminLoggedIn) {
     return (
@@ -1204,7 +1205,15 @@ function AdminApp({ isAdminLoggedIn, setIsAdminLoggedIn, goStore, orders, setOrd
           <OldTab active={tab === "settings"} onClick={() => setTab("settings")}>後台設定</OldTab>
         </nav>
 
-        {tab === "orders" && <OrdersPanel orders={orders} setOrders={setOrders} />}
+        {tab === "orders" && (
+          <OrdersPanel
+            orders={orders}
+            setOrders={setOrders}
+            loading={ordersLoading}
+            error={ordersError}
+            reloadOrders={loadOrders}
+          />
+        )}
         {tab === "products" && <ProductsPanel items={items} setItems={setItems} />}
         {tab === "stats" && <StatisticsPanel orders={orders} />}
         {tab === "settings" && <SettingsPanel />}
@@ -1237,15 +1246,59 @@ function OldTab({ active, children, onClick }) {
   );
 }
 
-function OrdersPanel({ orders, setOrders }) {
+function OrdersPanel({ orders, setOrders, loading, error, reloadOrders }) {
   const [filters, setFilters] = useState({ status: "all", payment: "all", keyword: "" });
 
-  function updateStatus(id, status) {
+  async function updateStatus(id, status) {
+    const originalOrders = orders;
     setOrders((prev) => prev.map((order) => (order.id === id ? { ...order, status } : order)));
+
+    try {
+      const response = await fetch("/api/admin-orders", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ orderNo: id, status }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.ok) {
+        setOrders(originalOrders);
+        alert(result.message || "訂單狀態更新失敗");
+      }
+    } catch (error) {
+      setOrders(originalOrders);
+      alert("訂單狀態更新失敗，請稍後再試。");
+    }
   }
 
-  function deleteOrder(id) {
+  async function deleteOrder(id) {
+    if (!window.confirm("確定要刪除這筆訂單嗎？")) return;
+
+    const originalOrders = orders;
     setOrders((prev) => prev.filter((order) => order.id !== id));
+
+    try {
+      const response = await fetch("/api/admin-orders", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ orderNo: id }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.ok) {
+        setOrders(originalOrders);
+        alert(result.message || "訂單刪除失敗");
+      }
+    } catch (error) {
+      setOrders(originalOrders);
+      alert("訂單刪除失敗，請稍後再試。");
+    }
   }
 
   function updateFilter(key, value) {
@@ -1285,7 +1338,16 @@ function OrdersPanel({ orders, setOrders }) {
       <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
         <div>
           <h2 className="text-xl font-bold text-black">訂單管理</h2>
-          <p className="mt-1 text-sm font-bold text-slate-700">
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button
+              type="button"
+              className="rounded-2xl border border-slate-400 bg-white px-4 py-2 text-sm font-bold text-black hover:bg-slate-100"
+              onClick={reloadOrders}
+            >
+              重新整理訂單
+            </button>
+          </div>
+          <p className="mt-3 text-sm font-bold text-slate-700">
             目前顯示 {filteredOrders.length} / {orders.length} 筆，篩選後金額 {formatCurrency(filteredTotal)}，數量 {filteredQty} 件
           </p>
         </div>
@@ -1335,6 +1397,18 @@ function OrdersPanel({ orders, setOrders }) {
           <span className="text-lg">{filteredOrders.length} 筆</span>
         </div>
       </div>
+
+      {loading && (
+        <div className="mb-4 rounded-2xl border border-slate-300 bg-slate-50 p-4 text-center font-bold text-slate-700">
+          訂單讀取中...
+        </div>
+      )}
+
+      {error && (
+        <div className="mb-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-center font-bold text-red-700">
+          {error}
+        </div>
+      )}
 
       {filteredOrders.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center font-bold text-slate-700">
