@@ -86,22 +86,25 @@ export default async function handler(req, res) {
       .single();
 
     if (error) {
-      return res.status(500).json({
-        ok: false,
-        message: "訂單儲存失敗",
-        detail: error.message,
-      });
-    }
+  console.error("Supabase insert error:", error);
+
+  return res.status(500).json({
+    ok: false,
+    message: `訂單儲存失敗：${error.message}`,
+    detail: error.message,
+  });
+}
 
     return res.status(200).json({
       ok: true,
       order: data,
     });
   } catch (error) {
-    return res.status(500).json({
-      ok: false,
-      message: "伺服器錯誤",
-      detail: error.message,
-    });
-  }
+  console.error("Order API error:", error);
+
+  return res.status(500).json({
+    ok: false,
+    message: `伺服器錯誤：${error.message}`,
+    detail: error.message,
+  });
 }
