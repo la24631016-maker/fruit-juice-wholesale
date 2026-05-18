@@ -319,23 +319,53 @@ export default function FruitJuiceWholesaleOrderPage() {
     navigateTo("/");
   }
 
-  function submitOrder(orderData) {
-    const newOrder = {
-      id: `ORD-${Date.now()}`,
-      createdAt: new Date().toLocaleString("zh-TW", { hour12: false }),
-      customerName: orderData.customerName || "未填寫",
-      phone: orderData.phone || "未填寫",
-      address: orderData.address || "未填寫",
-      payment: payment === "transfer" ? "匯款付款" : "貨到付款",
-      status: "待確認",
-      items: selectedItems.map((item) => ({ name: item.name, spec: item.spec, qty: item.qty, price: item.price })),
-      note: orderData.note || "",
-    };
-    setOrders((prev) => [newOrder, ...prev]);
+ async function submitOrder(orderData) {
+  if (selectedItems.length === 0) {
+    alert("請先選擇品項再送出訂單。");
+    return;
+  }
+
+  const orderPayload = {
+    customerName: orderData.customerName || "未填寫",
+    phone: orderData.phone || "未填寫",
+    address: orderData.address || "未填寫",
+    payment: payment === "transfer" ? "匯款付款" : "貨到付款",
+    note: orderData.note || "",
+    items: selectedItems.map((item) => ({
+      id: item.id,
+      name: item.name,
+      spec: item.spec,
+      qty: item.qty,
+      price: item.price,
+      subtotal: item.qty * item.price,
+    })),
+    totalQty,
+    totalAmount,
+  };
+
+  try {
+    const response = await fetch("/api/orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(orderPayload),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.ok) {
+      alert(result.message || "訂單送出失敗，請稍後再試。");
+      return;
+    }
+
     clearCart();
     setSection(null);
     alert("訂單已送出，感謝您的訂購！我們會盡快與您確認訂單內容與配送資訊。");
+  } catch (error) {
+    alert("訂單送出失敗，請確認網路後再試一次。");
   }
+}
 
   const isAdminRoute = route.startsWith("/admin");
 
