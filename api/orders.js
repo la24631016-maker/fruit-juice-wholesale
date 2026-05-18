@@ -94,9 +94,9 @@ export default async function handler(req, res) {
     }
 
     return res.status(200).json({
-      ok: true,
-      order: data,
-    });
+  ok: true,
+  orderNo,
+});
   } catch (error) {
     console.error("Order API error:", error);
 
