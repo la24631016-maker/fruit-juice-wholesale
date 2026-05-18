@@ -678,16 +678,15 @@ function JuiceIconCarousel({ slides }) {
             </div>
           )}
 
-          <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
-
-          <div className="absolute inset-x-0 bottom-0 p-4">
-            <h4 className="text-xl font-black text-white drop-shadow-sm">
-              {activeSlide.title}
-            </h4>
-            <p className="mt-1 text-sm font-semibold text-white/95 drop-shadow-sm">
-              {activeSlide.subtitle}
-            </p>
           </div>
+
+        <div className="px-2 pt-3">
+          <h4 className="text-xl font-black text-slate-900">
+            {activeSlide.title}
+          </h4>
+          <p className="mt-1 text-sm font-bold text-slate-600">
+            {activeSlide.subtitle}
+          </p>
         </div>
 
         <div className="mt-3 flex items-center justify-center gap-2">
