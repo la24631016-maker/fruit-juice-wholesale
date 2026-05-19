@@ -1230,7 +1230,7 @@ function AdminApp({ isAdminLoggedIn, setIsAdminLoggedIn, goStore, orders, setOrd
             reloadOrders={loadOrders}
           />
         )}
-        {tab === "products" && <ProductsPanel items={items} setItems={setItems} />}
+        {tab === "products" && <ProductSettingsPanel items={items} setItems={setItems} />}
         {tab === "stats" && <StatisticsPanel orders={orders} />}
         {tab === "settings" && <SettingsPanel />}
       </div>
@@ -1734,5 +1734,431 @@ function SettingsPanel() {
         </div>
       </div>
     </section>
+  );
+}
+function ProductSettingsPanel({ items, setItems }) {
+  const emptyForm = {
+    id: "",
+    category: "juice",
+    name: "",
+    spec: "",
+    price: 0,
+    note: "",
+    image: "",
+    active: true,
+    sortOrder: 0,
+  };
+
+  const [form, setForm] = useState(emptyForm);
+  const [editingId, setEditingId] = useState("");
+  const [filterCategory, setFilterCategory] = useState("all");
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+
+  async function loadAdminProducts() {
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/admin-products");
+      const result = await response.json();
+
+      if (!response.ok || !result.ok) {
+        setError(result.message || "品項讀取失敗");
+        return;
+      }
+
+      setItems(result.products || []);
+    } catch (error) {
+      setError("品項讀取失敗，請稍後再試。");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    loadAdminProducts();
+  }, []);
+
+  function startEdit(item) {
+    setEditingId(item.id);
+    setForm({
+      id: item.id,
+      category: item.category || "juice",
+      name: item.name || "",
+      spec: item.spec || "",
+      price: Number(item.price || 0),
+      note: item.note || "",
+      image: item.image || "",
+      active: Boolean(item.active),
+      sortOrder: Number(item.sortOrder || 0),
+    });
+  }
+
+  function resetForm() {
+    setEditingId("");
+    setForm(emptyForm);
+  }
+
+  async function saveProduct(event) {
+    event.preventDefault();
+
+    if (!form.name.trim() || !form.spec.trim()) {
+      alert("請填寫品項名稱與規格");
+      return;
+    }
+
+    setSaving(true);
+    setError("");
+
+    try {
+      const method = editingId ? "PATCH" : "POST";
+
+      const response = await fetch("/api/admin-products", {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...form,
+          id: editingId || form.id,
+          price: Number(form.price || 0),
+          sortOrder: Number(form.sortOrder || 0),
+          active: Boolean(form.active),
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.ok) {
+        alert(result.message || "品項儲存失敗");
+        return;
+      }
+
+      await loadAdminProducts();
+      resetForm();
+      alert("品項已儲存，前台重新整理後會同步更新。");
+    } catch (error) {
+      alert("品項儲存失敗，請稍後再試。");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function deleteProduct(id) {
+    if (!window.confirm("確定要刪除這個品項嗎？")) return;
+
+    setSaving(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/admin-products", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.ok) {
+        alert(result.message || "品項刪除失敗");
+        return;
+      }
+
+      await loadAdminProducts();
+      if (editingId === id) resetForm();
+    } catch (error) {
+      alert("品項刪除失敗，請稍後再試。");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function toggleActive(item) {
+    setSaving(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/admin-products", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...item,
+          active: !item.active,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.ok) {
+        alert(result.message || "品項狀態更新失敗");
+        return;
+      }
+
+      await loadAdminProducts();
+    } catch (error) {
+      alert("品項狀態更新失敗，請稍後再試。");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  const filteredItems = items
+    .filter((item) => filterCategory === "all" || item.category === filterCategory)
+    .sort((a, b) => {
+      if (a.category !== b.category) return a.category.localeCompare(b.category);
+      return Number(a.sortOrder || 0) - Number(b.sortOrder || 0);
+    });
+
+  return (
+    <div className="rounded-3xl border border-slate-300 bg-white p-5 shadow-sm">
+      <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h2 className="text-xl font-bold text-black">品項管理</h2>
+          <p className="mt-1 text-sm font-bold text-slate-700">
+            這裡修改後會儲存到資料庫，前台重新整理後會同步更新。
+          </p>
+        </div>
+
+        <button
+          type="button"
+          className="rounded-2xl border border-slate-400 bg-white px-4 py-2 text-sm font-bold text-black hover:bg-slate-100"
+          onClick={loadAdminProducts}
+        >
+          重新整理品項
+        </button>
+      </div>
+
+      {loading && (
+        <div className="mb-4 rounded-2xl border border-slate-300 bg-slate-50 p-4 text-center font-bold text-slate-700">
+          品項讀取中...
+        </div>
+      )}
+
+      {error && (
+        <div className="mb-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-center font-bold text-red-700">
+          {error}
+        </div>
+      )}
+
+      <form onSubmit={saveProduct} className="mb-6 rounded-3xl border border-slate-200 bg-slate-50 p-4">
+        <h3 className="mb-4 text-lg font-black text-slate-900">
+          {editingId ? "編輯品項" : "新增品項"}
+        </h3>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <label className="block">
+            <span className="mb-1 block text-sm font-bold text-slate-700">分類</span>
+            <select
+              className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 font-bold text-black"
+              value={form.category}
+              onChange={(event) => setForm((prev) => ({ ...prev, category: event.target.value }))}
+            >
+              <option value="juice">果汁</option>
+              <option value="fruit">水果</option>
+            </select>
+          </label>
+
+          <label className="block">
+            <span className="mb-1 block text-sm font-bold text-slate-700">品項 ID</span>
+            <input
+              className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 font-bold text-black disabled:bg-slate-100 disabled:text-slate-500"
+              placeholder="例如 juice-sugarcane"
+              value={form.id}
+              disabled={Boolean(editingId)}
+              onChange={(event) => setForm((prev) => ({ ...prev, id: event.target.value }))}
+            />
+            <p className="mt-1 text-xs font-bold text-slate-500">
+              新增時可填，例如 juice-new-product；編輯時不可修改 ID。
+            </p>
+          </label>
+
+          <label className="block">
+            <span className="mb-1 block text-sm font-bold text-slate-700">品項名稱</span>
+            <input
+              className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 font-bold text-black"
+              placeholder="例如 甘蔗汁"
+              value={form.name}
+              onChange={(event) => setForm((prev) => ({ ...prev, name: event.target.value }))}
+            />
+          </label>
+
+          <label className="block">
+            <span className="mb-1 block text-sm font-bold text-slate-700">規格</span>
+            <input
+              className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 font-bold text-black"
+              placeholder="例如 750ml / 瓶"
+              value={form.spec}
+              onChange={(event) => setForm((prev) => ({ ...prev, spec: event.target.value }))}
+            />
+          </label>
+
+          <label className="block">
+            <span className="mb-1 block text-sm font-bold text-slate-700">價格</span>
+            <input
+              type="number"
+              className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 font-bold text-black"
+              value={form.price}
+              onChange={(event) => setForm((prev) => ({ ...prev, price: event.target.value }))}
+            />
+          </label>
+
+          <label className="block">
+            <span className="mb-1 block text-sm font-bold text-slate-700">排序</span>
+            <input
+              type="number"
+              className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 font-bold text-black"
+              value={form.sortOrder}
+              onChange={(event) => setForm((prev) => ({ ...prev, sortOrder: event.target.value }))}
+            />
+          </label>
+
+          <label className="block md:col-span-2">
+            <span className="mb-1 block text-sm font-bold text-slate-700">圖片路徑</span>
+            <input
+              className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 font-bold text-black"
+              placeholder="/juice/sugarcane.jpg"
+              value={form.image}
+              onChange={(event) => setForm((prev) => ({ ...prev, image: event.target.value }))}
+            />
+            <p className="mt-1 text-xs font-bold text-slate-500">
+              圖片要放在 public/juice 或 public/fruit 裡，這裡填網站路徑。
+            </p>
+          </label>
+
+          <label className="block md:col-span-2">
+            <span className="mb-1 block text-sm font-bold text-slate-700">介紹</span>
+            <textarea
+              className="min-h-[90px] w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 font-bold text-black"
+              value={form.note}
+              onChange={(event) => setForm((prev) => ({ ...prev, note: event.target.value }))}
+            />
+          </label>
+
+          <label className="flex items-center gap-3 rounded-2xl border border-slate-300 bg-white p-4 font-bold text-black">
+            <input
+              type="checkbox"
+              checked={form.active}
+              onChange={(event) => setForm((prev) => ({ ...prev, active: event.target.checked }))}
+            />
+            前台顯示此品項
+          </label>
+        </div>
+
+        <div className="mt-4 flex flex-wrap gap-3">
+          <button
+            type="submit"
+            disabled={saving}
+            className="rounded-2xl bg-black px-5 py-3 text-sm font-black text-white hover:bg-slate-800 disabled:opacity-50"
+          >
+            {saving ? "儲存中..." : editingId ? "儲存修改" : "新增品項"}
+          </button>
+
+          {editingId && (
+            <button
+              type="button"
+              className="rounded-2xl border border-slate-400 bg-white px-5 py-3 text-sm font-black text-black hover:bg-slate-100"
+              onClick={resetForm}
+            >
+              取消編輯
+            </button>
+          )}
+        </div>
+      </form>
+
+      <div className="mb-4 flex flex-wrap items-center gap-3">
+        <span className="text-sm font-black text-slate-700">篩選分類</span>
+        <select
+          className="rounded-2xl border border-slate-300 bg-white px-4 py-2 text-sm font-bold text-black"
+          value={filterCategory}
+          onChange={(event) => setFilterCategory(event.target.value)}
+        >
+          <option value="all">全部</option>
+          <option value="juice">果汁</option>
+          <option value="fruit">水果</option>
+        </select>
+      </div>
+
+      <div className="grid gap-3">
+        {filteredItems.map((item) => (
+          <div
+            key={item.id}
+            className="grid gap-3 rounded-3xl border border-slate-200 bg-white p-4 shadow-sm md:grid-cols-[90px_1fr_auto]"
+          >
+            <div className="h-24 overflow-hidden rounded-2xl bg-slate-100">
+              {item.image ? (
+                <img src={item.image} alt={item.name} className="h-full w-full object-contain" />
+              ) : (
+                <div className="flex h-full items-center justify-center text-xs font-bold text-slate-400">
+                  無圖片
+                </div>
+              )}
+            </div>
+
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="text-lg font-black text-slate-900">{item.name}</h3>
+                <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-700">
+                  {item.category === "juice" ? "果汁" : "水果"}
+                </span>
+                <span
+                  className={`rounded-full px-3 py-1 text-xs font-black ${
+                    item.active ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+                  }`}
+                >
+                  {item.active ? "前台顯示" : "已停用"}
+                </span>
+              </div>
+
+              <p className="mt-1 text-sm font-bold text-slate-600">{item.spec}</p>
+              <p className="mt-1 text-sm font-bold text-slate-600">{item.note}</p>
+              <p className="mt-2 text-lg font-black text-slate-900">
+                {formatCurrency(item.price)}
+              </p>
+              <p className="mt-1 text-xs font-bold text-slate-500">
+                ID：{item.id}｜排序：{item.sortOrder}
+              </p>
+            </div>
+
+            <div className="flex flex-row gap-2 md:flex-col">
+              <button
+                type="button"
+                className="rounded-2xl border border-slate-400 bg-white px-4 py-2 text-sm font-bold text-black hover:bg-slate-100"
+                onClick={() => startEdit(item)}
+              >
+                編輯
+              </button>
+
+              <button
+                type="button"
+                className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-2 text-sm font-bold text-amber-700 hover:bg-amber-100"
+                onClick={() => toggleActive(item)}
+              >
+                {item.active ? "停用" : "啟用"}
+              </button>
+
+              <button
+                type="button"
+                className="rounded-2xl border border-red-200 bg-red-50 px-4 py-2 text-sm font-bold text-red-700 hover:bg-red-100"
+                onClick={() => deleteProduct(item.id)}
+              >
+                刪除
+              </button>
+            </div>
+          </div>
+        ))}
+
+        {filteredItems.length === 0 && (
+          <div className="rounded-3xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center font-bold text-slate-600">
+            目前沒有品項
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
