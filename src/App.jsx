@@ -208,6 +208,22 @@ export default function FruitJuiceWholesaleOrderPage() {
   const [route, setRoute] = useState(() => window.location.pathname);
   const [section, setSection] = useState(null);
   const [items, setItems] = useState([...initialJuiceItems, ...initialFruitItems]);
+  useEffect(() => {
+  async function loadStoreProducts() {
+    try {
+      const response = await fetch("/api/products");
+      const result = await response.json();
+
+      if (response.ok && result.ok && Array.isArray(result.products) && result.products.length > 0) {
+        setItems(result.products);
+      }
+    } catch (error) {
+      console.error("Load products failed:", error);
+    }
+  }
+
+  loadStoreProducts();
+}, []);
   const [orders, setOrders] = useState(sampleOrders);
   const [quantities, setQuantities] = useState({});
   const [checkout, setCheckout] = useState(false);
