@@ -1,8 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 function createSupabaseAdmin() {
   const supabaseUrl = process.env.SUPABASE_URL;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -20,7 +18,13 @@ function createSupabaseAdmin() {
 }
 
 function createOrderNo() {
-    function formatCurrency(value) {
+  const now = new Date();
+  const date = now.toISOString().slice(0, 10).replaceAll("-", "");
+  const random = Math.floor(Math.random() * 9000 + 1000);
+  return `LMT-${date}-${random}`;
+}
+
+function formatCurrency(value) {
   return `NT$${Number(value || 0).toLocaleString("zh-TW")}`;
 }
 
@@ -48,7 +52,7 @@ async function sendOrderEmail({
   const notifyEmail = process.env.ORDER_NOTIFY_EMAIL;
 
   if (!apiKey || !notifyEmail) {
-    console.warn("Email notification skipped: missing RESEND_API_KEY or ORDER_NOTIFY_EMAIL");
+    console.warn("Email skipped: missing RESEND_API_KEY or ORDER_NOTIFY_EMAIL");
     return;
   }
 
@@ -77,7 +81,7 @@ async function sendOrderEmail({
     })
     .join("");
 
-  await resend.emails.send({
+  const emailResult = await resend.emails.send({
     from: "雷盟堂訂單 <onboarding@resend.dev>",
     to: [notifyEmail],
     subject: `【雷盟堂新訂單】${orderNo}`,
@@ -131,11 +135,12 @@ ${textItems}
       </div>
     `,
   });
-}
-  const now = new Date();
-  const date = now.toISOString().slice(0, 10).replaceAll("-", "");
-  const random = Math.floor(Math.random() * 9000 + 1000);
-  return `LMT-${date}-${random}`;
+
+  if (emailResult.error) {
+    throw new Error(emailResult.error.message || "Email send failed");
+  }
+
+  return emailResult;
 }
 
 export default async function handler(req, res) {
@@ -182,21 +187,21 @@ export default async function handler(req, res) {
     const orderNo = createOrderNo();
 
     const { error } = await supabase
-  .from("orders")
-  .insert({
-    order_no: orderNo,
-    customer: {
-      name: customerName,
-      phone,
-      address,
-    },
-    items,
-    total: totalAmount,
-    total_qty: totalQty,
-    payment: body.payment || "貨到付款",
-    status: "待確認",
-    note: body.note || "",
-  });
+      .from("orders")
+      .insert({
+        order_no: orderNo,
+        customer: {
+          name: customerName,
+          phone,
+          address,
+        },
+        items,
+        total: totalAmount,
+        total_qty: totalQty,
+        payment: body.payment || "貨到付款",
+        status: "待確認",
+        note: body.note || "",
+      });
 
     if (error) {
       console.error("Supabase insert error:", error);
@@ -209,44 +214,27 @@ export default async function handler(req, res) {
     }
 
     try {
-  await sendOrderEmail({
-    orderNo,
-    customerName,
-    phone,
-    address,
-    payment: body.payment || "貨到付款",
-    note: body.note || "",
-    items,
-    totalQty,
-    totalAmount,
-  });
+      await sendOrderEmail({
+        orderNo,
+        customerName,
+        phone,
+        address,
+        payment: body.payment || "貨到付款",
+        note: body.note || "",
+        items,
+        totalQty,
+        totalAmount,
+      });
 
-  console.log("Order email sent:", orderNo);
-} catch (emailError) {
-  console.error("Order email notification failed:", emailError);
-}
+      console.log("Order email sent:", orderNo);
+    } catch (emailError) {
+      console.error("Order email notification failed:", emailError);
+    }
 
-try {
-  await sendOrderEmail({
-    orderNo,
-    customerName,
-    phone,
-    address,
-    payment: body.payment || "貨到付款",
-    note: body.note || "",
-    items,
-    totalQty,
-    totalAmount,
-  });
-
-  console.log("Order email sent:", orderNo);
-} catch (emailError) {
-  console.error("Order email notification failed:", emailError);
-}
-return res.status(200).json({
-  ok: true,
-  orderNo,
-});
+    return res.status(200).json({
+      ok: true,
+      orderNo,
+    });
   } catch (error) {
     console.error("Order API error:", error);
 
