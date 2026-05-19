@@ -226,6 +226,23 @@ export default async function handler(req, res) {
   console.error("Order email notification failed:", emailError);
 }
 
+try {
+  await sendOrderEmail({
+    orderNo,
+    customerName,
+    phone,
+    address,
+    payment: body.payment || "貨到付款",
+    note: body.note || "",
+    items,
+    totalQty,
+    totalAmount,
+  });
+
+  console.log("Order email sent:", orderNo);
+} catch (emailError) {
+  console.error("Order email notification failed:", emailError);
+}
 return res.status(200).json({
   ok: true,
   orderNo,
