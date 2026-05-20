@@ -1782,19 +1782,29 @@ function ProductSettingsPanel({ items, setItems }) {
   }, []);
 
   function startEdit(item) {
-    setEditingId(item.id);
-    setForm({
-      id: item.id,
-      category: item.category || "juice",
-      name: item.name || "",
-      spec: item.spec || "",
-      price: Number(item.price || 0),
-      note: item.note || "",
-      image: item.image || "",
-      active: Boolean(item.active),
-      sortOrder: Number(item.sortOrder || 0),
-    });
-  }
+  setEditingId(item.id);
+  setForm({
+    id: item.id,
+    category: item.category || "juice",
+    name: item.name || "",
+    spec: item.spec || "",
+    price: Number(item.price || 0),
+    note: item.note || "",
+    image: item.image || "",
+    active: Boolean(item.active),
+    sortOrder: Number(item.sortOrder || 0),
+  });
+
+  setTimeout(() => {
+    const formElement = document.getElementById("product-edit-form");
+    if (formElement) {
+      formElement.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, 100);
+}
 
   function resetForm() {
     setEditingId("");
@@ -1946,7 +1956,11 @@ function ProductSettingsPanel({ items, setItems }) {
         </div>
       )}
 
-      <form onSubmit={saveProduct} className="mb-6 rounded-3xl border border-slate-200 bg-slate-50 p-4">
+      <form
+  id="product-edit-form"
+  onSubmit={saveProduct}
+  className="mb-6 rounded-3xl border border-slate-200 bg-slate-50 p-4"
+>
         <h3 className="mb-4 text-lg font-black text-slate-900">
           {editingId ? "編輯品項" : "新增品項"}
         </h3>
