@@ -94,37 +94,132 @@ const juiceSlides = [
 
 const fruitSlides = [
   {
-    title: "香蕉",
-    subtitle: "自然熟成｜批發採購｜穩定供貨",
-    image: "/fruit/banana.jpg",
-    emoji: "🍌",
+    title: "椰子",
+    subtitle: "每日時價｜大量採購｜請加 LINE 詢問",
+    image: "/fruit/coconut.png",
+    emoji: "🥥",
   },
   {
-    title: "蘋果",
-    subtitle: "清脆香甜｜店家常備｜耐放好搭",
-    image: "/fruit/apple.jpg",
-    emoji: "🍎",
-  },
-  {
-    title: "柳丁",
-    subtitle: "新鮮多汁｜榨汁零售｜餐飲適用",
-    image: "/fruit/orange.jpg",
+    title: "台灣葡萄柚",
+    subtitle: "每日時價｜產地供貨｜請加 LINE 詢問",
+    image: "/fruit/taiwan-grapefruit.png",
     emoji: "🍊",
   },
   {
-    title: "芭樂",
-    subtitle: "清爽高纖｜健康天然｜團購熱門",
-    image: "/fruit/guava.jpg",
+    title: "進口葡萄柚",
+    subtitle: "每日時價｜進口水果｜請加 LINE 詢問",
+    image: "/fruit/imported-grapefruit.png",
+    emoji: "🍊",
+  },
+  {
+    title: "台灣柳丁",
+    subtitle: "每日時價｜新鮮多汁｜請加 LINE 詢問",
+    image: "/fruit/taiwan-orange.png",
+    emoji: "🍊",
+  },
+  {
+    title: "進口香吉士",
+    subtitle: "每日時價｜進口水果｜請加 LINE 詢問",
+    image: "/fruit/imported-sunkist.png",
+    emoji: "🍊",
+  },
+  {
+    title: "檸檬 A 級",
+    subtitle: "每日時價｜分級供貨｜請加 LINE 詢問",
+    image: "/fruit/lemon-a.png",
+    emoji: "🍋",
+  },
+  {
+    title: "檸檬 B 級",
+    subtitle: "每日時價｜分級供貨｜請加 LINE 詢問",
+    image: "/fruit/lemon-b.png",
+    emoji: "🍋",
+  },
+  {
+    title: "金桔",
+    subtitle: "每日時價｜酸香鮮明｜請加 LINE 詢問",
+    image: "/fruit/kumquat.png",
+    emoji: "🍊",
+  },
+  {
+    title: "進口蘋果",
+    subtitle: "每日時價｜進口水果｜請加 LINE 詢問",
+    image: "/fruit/imported-apple.png",
+    emoji: "🍎",
+  },
+  {
+    title: "芭樂 A 級",
+    subtitle: "每日時價｜分級供貨｜請加 LINE 詢問",
+    image: "/fruit/guava-a.png",
     emoji: "🍐",
   },
   {
+    title: "芭樂 B 級",
+    subtitle: "每日時價｜分級供貨｜請加 LINE 詢問",
+    image: "/fruit/guava-b.png",
+    emoji: "🍐",
+  },
+  {
+    title: "奇異果",
+    subtitle: "每日時價｜顆數計價｜請加 LINE 詢問",
+    image: "/fruit/kiwi.png",
+    emoji: "🥝",
+  },
+  {
+    title: "山蕉",
+    subtitle: "每日時價｜產地供貨｜請加 LINE 詢問",
+    image: "/fruit/mountain-banana.png",
+    emoji: "🍌",
+  },
+  {
+    title: "草莓",
+    subtitle: "1號 / 2號 / 3號 / 4號｜請加 LINE 詢問",
+    image: "/fruit/strawberry.png",
+    emoji: "🍓",
+  },
+  {
+    title: "愛文芒果",
+    subtitle: "15顆 / 18顆 / 20顆 / 24顆｜請加 LINE 詢問",
+    image: "/fruit/aiwen-mango.png",
+    emoji: "🥭",
+  },
+  {
+    title: "金鑽鳳梨",
+    subtitle: "每日時價｜香甜多汁｜請加 LINE 詢問",
+    image: "/fruit/golden-pineapple.png",
+    emoji: "🍍",
+  },
+  {
+    title: "小番茄",
+    subtitle: "每日時價｜鮮甜爽口｜請加 LINE 詢問",
+    image: "/fruit/cherry-tomato.png",
+    emoji: "🍅",
+  },
+  {
+    title: "白肉火龍果",
+    subtitle: "每日時價｜白肉品項｜請加 LINE 詢問",
+    image: "/fruit/dragon-fruit-white.png",
+    emoji: "🐉",
+  },
+  {
+    title: "紅肉火龍果",
+    subtitle: "每日時價｜紅肉品項｜請加 LINE 詢問",
+    image: "/fruit/dragon-fruit-red.png",
+    emoji: "🐉",
+  },
+  {
+    title: "紅肉木瓜",
+    subtitle: "每日時價｜顆數計價｜請加 LINE 詢問",
+    image: "/fruit/red-papaya.png",
+    emoji: "🟠",
+  },
+  {
     title: "西瓜",
-    subtitle: "夏季主力｜清甜消暑｜切盤果汁皆宜",
-    image: "/fruit/watermelon.jpg",
+    subtitle: "每日時價｜顆數計價｜請加 LINE 詢問",
+    image: "/fruit/watermelon.png",
     emoji: "🍉",
   },
 ];
-
 const sampleOrders = [];
 
 function formatCurrency(value) {
