@@ -247,7 +247,7 @@ export default function FruitJuiceWholesaleOrderPage() {
     },
     fruit: {
       title: "水果專區",
-      subtitle: "新鮮、自然、健康，批發採購更好搭配。",
+      subtitle: "水果每日盤價，網站不顯示固定售價；請加 LINE 詢問當日時價與配送方式。",
       emoji: "🍎",
       pageBg: "bg-gradient-to-br from-lime-50 via-orange-50 to-white",
       chip: "bg-lime-50 text-lime-700 border-lime-100",
@@ -262,6 +262,7 @@ export default function FruitJuiceWholesaleOrderPage() {
 
   const selectedItems = useMemo(() => {
     return items
+      .filter((item) => item.category !== "fruit")
       .map((item) => ({ ...item, qty: quantities[item.id] || 0 }))
       .filter((item) => item.qty > 0);
   }, [items, quantities]);
@@ -425,7 +426,7 @@ export default function FruitJuiceWholesaleOrderPage() {
             />
             <SectionEntry
               title="水果專區"
-              subtitle="新鮮自然的批發水果，適合店家備貨、活動、零售搭配。"
+              subtitle="水果每日盤價，網站不顯示固定售價；請加 LINE 詢問當日時價與配送方式。"
               emoji="🍎"
               className="border-lime-100 bg-gradient-to-br from-lime-50 to-orange-50"
               iconClass="bg-lime-100 text-lime-700"
@@ -498,6 +499,7 @@ export default function FruitJuiceWholesaleOrderPage() {
               </div>
 
               {section === "juice" && <JuicePureNotice />}
+              {section === "fruit" && <FruitDailyPriceNotice />}
 
               <div className="grid gap-4">
                 {current.items.map((item) => (
@@ -578,7 +580,31 @@ function JuicePureNotice() {
   );
 }
 
+function FruitDailyPriceNotice() {
+  return (
+    <div className="rounded-3xl border border-emerald-100 bg-gradient-to-br from-emerald-50 via-lime-50 to-white p-5 shadow-sm">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div>
+          <p className="text-sm font-black text-emerald-700">DAILY MARKET PRICE</p>
+          <h3 className="mt-1 text-2xl font-black text-slate-900">水果每日盤價｜請加 LINE 詢問</h3>
+          <p className="mt-2 text-sm font-bold leading-7 text-slate-600">
+            水果價格每日依產地、等級、數量與市場行情調整，網站不顯示固定售價。
+            如需今日報價，請加入 LINE 官方帳號洽詢。
+          </p>
+        </div>
+
+        <div className="grid gap-2 text-sm font-black text-slate-700 sm:min-w-[360px]">
+          <div className="rounded-2xl bg-white p-3 shadow-sm">可寄送水果：可混搭滿 40 斤免運</div>
+          <div className="rounded-2xl bg-white p-3 shadow-sm">椰子除外：椰子滿 30 斤免運</div>
+          <div className="rounded-2xl bg-white p-3 shadow-sm">未滿免運門檻：運費 +150｜外島另加 +200</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ProductItemCard({ item, current, quantity, onDecrease, onIncrease, onSetQty }) {
+  const isFruit = item.category === "fruit";
   return (
     <Card className="group overflow-hidden border-white/70 transition hover:-translate-y-0.5 hover:shadow-md">
       <div className="grid gap-4 p-4 sm:grid-cols-[170px_1fr_auto] sm:items-center">
@@ -606,25 +632,48 @@ function ProductItemCard({ item, current, quantity, onDecrease, onIncrease, onSe
             <span className={cx("rounded-full border px-3 py-1 text-xs font-bold", current.chip)}>{item.spec}</span>
           </div>
           <p className="text-sm font-medium leading-6 text-slate-600">{item.note}</p>
-          <p className={cx("mt-3 text-2xl font-black", current.accentText)}>{formatCurrency(item.price)}</p>
+          {isFruit ? (
+            <div className="mt-3 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3">
+              <p className="text-sm font-black text-emerald-700">每日時價</p>
+              <p className="mt-1 text-xs font-bold text-emerald-700">請加 LINE 詢問今日價格</p>
+            </div>
+          ) : (
+            <p className={cx("mt-3 text-2xl font-black", current.accentText)}>{formatCurrency(item.price)}</p>
+          )}
         </div>
 
-        <div className="rounded-3xl border border-slate-100 bg-white/80 p-3 shadow-sm sm:min-w-[156px]">
-          <p className="mb-2 text-center text-xs font-bold text-slate-500">訂購數量</p>
-          <div className="flex items-center justify-center gap-3">
-            <GhostButton className="h-11 w-11 rounded-full px-0 py-0 text-lg" onClick={onDecrease}>-</GhostButton>
-            <input
-              aria-label={`${item.name} 數量`}
-              className="h-11 w-16 rounded-2xl border border-slate-200 bg-white text-center font-bold outline-none focus:border-slate-400"
-              type="number"
-              min="0"
-              value={quantity}
-              placeholder="0"
-              onChange={(event) => onSetQty(event.target.value)}
-            />
-            <PrimaryButton className={cx("h-11 w-11 rounded-full px-0 py-0 text-lg", current.button)} onClick={onIncrease}>+</PrimaryButton>
+        {isFruit ? (
+          <div className="rounded-3xl border border-emerald-100 bg-white/90 p-3 shadow-sm sm:min-w-[190px]">
+            <p className="mb-2 text-center text-xs font-bold text-emerald-700">水果每日盤價</p>
+            <button
+              type="button"
+              className="w-full rounded-2xl bg-emerald-600 px-4 py-3 text-sm font-black text-white transition hover:bg-emerald-700"
+              onClick={() => openLineFruitInquiry(item)}
+            >
+              加 LINE 詢問每日時價
+            </button>
+            <p className="mt-2 text-center text-xs font-bold leading-5 text-slate-500">
+              目前水果不開放加入購物車
+            </p>
           </div>
-        </div>
+        ) : (
+          <div className="rounded-3xl border border-slate-100 bg-white/80 p-3 shadow-sm sm:min-w-[156px]">
+            <p className="mb-2 text-center text-xs font-bold text-slate-500">訂購數量</p>
+            <div className="flex items-center justify-center gap-3">
+              <GhostButton className="h-11 w-11 rounded-full px-0 py-0 text-lg" onClick={onDecrease}>-</GhostButton>
+              <input
+                aria-label={`${item.name} 數量`}
+                className="h-11 w-16 rounded-2xl border border-slate-200 bg-white text-center font-bold outline-none focus:border-slate-400"
+                type="number"
+                min="0"
+                value={quantity}
+                placeholder="0"
+                onChange={(event) => onSetQty(event.target.value)}
+              />
+              <PrimaryButton className={cx("h-11 w-11 rounded-full px-0 py-0 text-lg", current.button)} onClick={onIncrease}>+</PrimaryButton>
+            </div>
+          </div>
+        )}
       </div>
     </Card>
   );
@@ -2131,9 +2180,18 @@ function ProductSettingsPanel({ items, setItems }) {
 
               <p className="mt-1 text-sm font-bold text-slate-600">{item.spec}</p>
               <p className="mt-1 text-sm font-bold text-slate-600">{item.note}</p>
-              <p className="mt-2 text-lg font-black text-slate-900">
-                {formatCurrency(item.price)}
-              </p>
+             {item.category === "fruit" ? (
+  <div className="mt-3 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3">
+    <p className="text-sm font-black text-emerald-700">每日時價</p>
+    <p className="mt-1 text-xs font-bold text-emerald-700">
+      請加 LINE 詢問今日價格
+    </p>
+  </div>
+) : (
+  <p className="mt-2 text-lg font-black text-slate-900">
+    {formatCurrency(item.price)}
+  </p>
+)}
               <p className="mt-1 text-xs font-bold text-slate-500">
                 ID：{item.id}｜排序：{item.sortOrder}
               </p>
@@ -2174,5 +2232,10 @@ function ProductSettingsPanel({ items, setItems }) {
         )}
       </div>
     </div>
+  );
+}
+function openLineFruitInquiry(item) {
+  alert(
+    `此商品為每日時價，請加 LINE 詢問今日價格。\n\n詢問商品：${item.name}\n\nLINE 官方帳號連結之後會補上。`
   );
 }
