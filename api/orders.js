@@ -37,6 +37,90 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function formatPayment(value) {
+  const payment = String(value || "貨到付款");
+
+  const paymentMap = {
+    cash: "貨到付款",
+    transfer: "銀行匯款",
+    linepay: "LINE Pay",
+    pickup: "現場付款",
+  };
+
+  return paymentMap[payment] || payment;
+}
+
+async function sendLineOrderNotification({
+  orderNo,
+  customerName,
+  phone,
+  address,
+  payment,
+  note,
+  items,
+  totalQty,
+  totalAmount,
+}) {
+  const channelAccessToken = process.env.LINE_CHANNEL_ACCESS_TOKEN;
+  const notifyTo = process.env.LINE_NOTIFY_TO;
+
+  if (!channelAccessToken || !notifyTo) {
+    console.warn("LINE skipped: missing LINE_CHANNEL_ACCESS_TOKEN or LINE_NOTIFY_TO");
+    return;
+  }
+
+  const itemLines = items
+    .map((item) => {
+      const qty = Number(item.qty || 0);
+      const price = Number(item.price || 0);
+      const subtotal = qty * price;
+      const specText = item.spec ? `｜${item.spec}` : "";
+
+      return `・${item.name}${specText} × ${qty}｜單價 ${formatCurrency(price)}｜小計 ${formatCurrency(subtotal)}`;
+    })
+    .join("\n");
+
+  const text = [
+    `【雷盟堂新訂單】${orderNo}`,
+    "",
+    `訂購人：${customerName}`,
+    `電話：${phone}`,
+    `地址：${address}`,
+    `付款方式：${formatPayment(payment)}`,
+    `備註：${note || "無"}`,
+    "",
+    "訂購品項：",
+    itemLines,
+    "",
+    `總數量：${totalQty}`,
+    `總金額：${formatCurrency(totalAmount)}`,
+  ].join("\n");
+
+  const response = await fetch("https://api.line.me/v2/bot/message/push", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${channelAccessToken}`,
+    },
+    body: JSON.stringify({
+      to: notifyTo,
+      messages: [
+        {
+          type: "text",
+          text,
+        },
+      ],
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`LINE push failed: ${response.status} ${errorText}`);
+  }
+
+  console.log("LINE order notification sent:", orderNo);
+}
+
 async function sendOrderEmail({
   orderNo,
   customerName,
@@ -91,7 +175,7 @@ async function sendOrderEmail({
 訂購人：${customerName}
 電話：${phone}
 地址：${address}
-付款方式：${payment}
+付款方式：${formatPayment(payment)}
 備註：${note || "無"}
 
 品項：
@@ -109,7 +193,7 @@ ${textItems}
           <p><strong>訂購人：</strong>${escapeHtml(customerName)}</p>
           <p><strong>電話：</strong>${escapeHtml(phone)}</p>
           <p><strong>地址：</strong>${escapeHtml(address)}</p>
-          <p><strong>付款方式：</strong>${escapeHtml(payment)}</p>
+          <p><strong>付款方式：</strong>${escapeHtml(formatPayment(payment))}</p>
           <p><strong>備註：</strong>${escapeHtml(note || "無")}</p>
         </div>
 
@@ -185,6 +269,8 @@ export default async function handler(req, res) {
 
     const supabase = createSupabaseAdmin();
     const orderNo = createOrderNo();
+    const payment = body.payment || "貨到付款";
+    const note = body.note || "";
 
     const { error } = await supabase
       .from("orders")
@@ -198,9 +284,9 @@ export default async function handler(req, res) {
         items,
         total: totalAmount,
         total_qty: totalQty,
-        payment: body.payment || "貨到付款",
+        payment,
         status: "待確認",
-        note: body.note || "",
+        note,
       });
 
     if (error) {
@@ -213,22 +299,29 @@ export default async function handler(req, res) {
       });
     }
 
-    try {
-      await sendOrderEmail({
-        orderNo,
-        customerName,
-        phone,
-        address,
-        payment: body.payment || "貨到付款",
-        note: body.note || "",
-        items,
-        totalQty,
-        totalAmount,
-      });
+    const orderPayload = {
+      orderNo,
+      customerName,
+      phone,
+      address,
+      payment,
+      note,
+      items,
+      totalQty,
+      totalAmount,
+    };
 
+    try {
+      await sendOrderEmail(orderPayload);
       console.log("Order email sent:", orderNo);
     } catch (emailError) {
       console.error("Order email notification failed:", emailError);
+    }
+
+    try {
+      await sendLineOrderNotification(orderPayload);
+    } catch (lineError) {
+      console.error("LINE order notification failed:", lineError);
     }
 
     return res.status(200).json({
