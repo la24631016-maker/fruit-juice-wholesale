@@ -230,21 +230,13 @@ function formatCurrency(value) {
   }).format(value);
 }
 
-const LINE_OFFICIAL_URL = "";
+const LINE_OFFICIAL_ID = "@922grpau";
+const LINE_OFFICIAL_URL = "https://line.me/R/ti/p/%40922grpau";
+const LINE_QR_CODE_URL =
+  "https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=https%3A%2F%2Fline.me%2FR%2Fti%2Fp%2F%2540922grpau";
 
 function openLineFruitInquiry(item) {
-  if (LINE_OFFICIAL_URL) {
-    window.open(LINE_OFFICIAL_URL, "_blank", "noopener,noreferrer");
-    return;
-  }
-
-  alert(
-    `此商品為每日時價，請加 LINE 詢問今日價格。
-
-詢問商品：${item.name}
-
-LINE 官方帳號連結之後會補上。`
-  );
+  window.open(LINE_OFFICIAL_URL, "_blank", "noopener,noreferrer");
 }
 
 function getOrderTotal(order) {
@@ -340,6 +332,7 @@ export default function FruitJuiceWholesaleOrderPage() {
   const [quantities, setQuantities] = useState({});
   const [checkout, setCheckout] = useState(false);
   const [payment, setPayment] = useState("cash");
+  const [lineModalOpen, setLineModalOpen] = useState(false);
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
 
   const juiceItems = items.filter((item) => item.category === "juice" && item.active);
@@ -417,6 +410,10 @@ export default function FruitJuiceWholesaleOrderPage() {
   function goStore() {
     navigateTo("/");
   }
+  function openLineModal() {
+  setLineModalOpen(true);
+  window.open(LINE_OFFICIAL_URL, "_blank", "noopener,noreferrer");
+}
 
   async function submitOrder(orderData) {
     if (selectedItems.length === 0) {
@@ -667,7 +664,13 @@ export default function FruitJuiceWholesaleOrderPage() {
             </aside>
           </main>
         )}
-      </div>
+            </div>
+
+      <FloatingLineButton onClick={openLineModal} />
+
+      {lineModalOpen && (
+        <LineContactModal onClose={() => setLineModalOpen(false)} />
+      )}
     </div>
   );
 }
@@ -2337,6 +2340,66 @@ function ProductSettingsPanel({ items, setItems }) {
             目前沒有品項
           </div>
         )}
+      </div>
+    </div>
+  );
+}
+function FloatingLineButton({ onClick }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="fixed right-4 top-1/2 z-50 flex h-16 w-16 -translate-y-1/2 items-center justify-center rounded-full bg-[#06C755] text-white shadow-xl transition hover:scale-105 hover:bg-[#05b94f]"
+      aria-label="加入 LINE 官方帳號"
+    >
+      <span className="text-2xl font-black">LINE</span>
+    </button>
+  );
+}
+
+function LineContactModal({ onClose }) {
+  return (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/45 px-4">
+      <div className="w-full max-w-sm rounded-3xl bg-white p-6 text-center shadow-2xl">
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#06C755] text-white">
+          <span className="text-xl font-black">LINE</span>
+        </div>
+
+        <h3 className="text-2xl font-black text-slate-900">加入 LINE 官方帳號</h3>
+
+        <p className="mt-2 text-sm font-bold text-slate-600">
+          掃描 QR Code 或搜尋 LINE ID 洽詢每日時價。
+        </p>
+
+        <div className="mt-5 rounded-3xl border border-slate-200 bg-slate-50 p-4">
+          <img
+            src={LINE_QR_CODE_URL}
+            alt="雷盟堂 LINE 官方帳號 QR Code"
+            className="mx-auto h-56 w-56 rounded-2xl bg-white p-2"
+          />
+        </div>
+
+        <div className="mt-4 rounded-2xl bg-emerald-50 p-4">
+          <p className="text-xs font-black text-emerald-700">LINE ID</p>
+          <p className="mt-1 text-2xl font-black text-emerald-700">{LINE_OFFICIAL_ID}</p>
+        </div>
+
+        <a
+          href={LINE_OFFICIAL_URL}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-5 inline-flex w-full items-center justify-center rounded-2xl bg-[#06C755] px-5 py-4 text-base font-black text-white transition hover:bg-[#05b94f]"
+        >
+          直接加入 LINE 好友
+        </a>
+
+        <button
+          type="button"
+          onClick={onClose}
+          className="mt-3 w-full rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-black text-slate-700 hover:bg-slate-50"
+        >
+          關閉
+        </button>
       </div>
     </div>
   );
