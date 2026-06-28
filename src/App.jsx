@@ -706,7 +706,7 @@ function FruitDailyPriceNotice() {
         <div className="grid gap-2 text-xs font-black text-slate-700 sm:min-w-[320px]">
           <div className="rounded-2xl bg-white p-3 shadow-sm">可寄送水果：滿 40 斤免運，可混搭。</div>
           <div className="rounded-2xl bg-white p-3 shadow-sm">椰子除外：椰子滿 30 斤免運。</div>
-          <div className="rounded-2xl bg-white p-3 shadow-sm">未滿免運門檻：運費 +150；外島另加 +200。</div>
+        
         </div>
       </div>
     </div>
