@@ -730,7 +730,7 @@ export default function FruitJuiceWholesaleOrderPage() {
               <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">微酵檸檬農產行</h1>
               <p className="mt-2 max-w-2xl text-slate-600">B2B,歡迎長期配合,眾多餐飲品牌指定商品。
                 <br />
-                地址:台中市西屯區福雅路571-10號</p>
+                地址:台中市西屯區福雅路571-10號,電話:(04)2463-1016</p>
             </div>
           </div>
 
