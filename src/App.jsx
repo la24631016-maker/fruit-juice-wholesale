@@ -461,6 +461,7 @@ const LINE_OFFICIAL_URL = "https://line.me/R/ti/p/%40922grpau";
 const LINE_QR_CODE_URL =
   "https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=https%3A%2F%2Fline.me%2FR%2Fti%2Fp%2F%2540922grpau";
 
+const FACEBOOK_PAGE_URL = "https://www.facebook.com/profile.php?id=100057245148347";  
 function openLineFruitInquiry(item) {
   window.open(LINE_OFFICIAL_URL, "_blank", "noopener,noreferrer");
 }
@@ -2599,14 +2600,26 @@ function ProductSettingsPanel({ items, setItems }) {
 }
 function FloatingLineButton({ onClick }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="fixed right-4 top-1/2 z-50 flex h-16 w-16 -translate-y-1/2 items-center justify-center rounded-full bg-[#06C755] text-white shadow-xl transition hover:scale-105 hover:bg-[#05b94f]"
-      aria-label="加入 LINE 官方帳號"
-    >
-      <span className="text-2xl font-black">LINE</span>
-    </button>
+    <div className="fixed right-4 top-1/2 z-50 flex -translate-y-1/2 flex-col gap-3">
+      <button
+        type="button"
+        onClick={onClick}
+        className="flex h-16 w-16 items-center justify-center rounded-full bg-[#06C755] text-white shadow-xl transition hover:scale-105 hover:bg-[#05b94f]"
+        aria-label="加入 LINE 官方帳號"
+      >
+        <span className="text-2xl font-black">LINE</span>
+      </button>
+
+      <a
+        href={FACEBOOK_PAGE_URL}
+        target="_blank"
+        rel="noreferrer"
+        className="flex h-16 w-16 items-center justify-center rounded-full bg-[#1877F2] text-white shadow-xl transition hover:scale-105 hover:bg-[#166fe5]"
+        aria-label="前往 Facebook 粉絲專頁"
+      >
+        <span className="text-2xl font-black">FB</span>
+      </a>
+    </div>
   );
 }
 
