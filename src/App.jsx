@@ -1334,6 +1334,11 @@ function CheckoutForm({ selectedItems, totalAmount, payment, setPayment, buttonC
   const [form, setForm] = useState({ customerName: "", phone: "", address: "", note: "" });
   const showBankInfo = payment === "transfer";
 
+  const canSubmit =
+    form.customerName.trim() !== "" &&
+    form.phone.trim() !== "" &&
+    form.address.trim() !== "";
+
   function updateForm(key, value) {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
@@ -1365,9 +1370,9 @@ function CheckoutForm({ selectedItems, totalAmount, payment, setPayment, buttonC
       </div>
 
       <form className="space-y-3" onSubmit={(event) => { event.preventDefault(); onSubmit(form); }}>
-        <TextInput emoji="👤" label="訂購人 / 店名" placeholder="請輸入姓名或店名" value={form.customerName} onChange={(value) => updateForm("customerName", value)} />
-        <TextInput emoji="📞" label="聯絡電話" placeholder="請輸入手機或市話" value={form.phone} onChange={(value) => updateForm("phone", value)} />
-        <TextInput emoji="📍" label="配送地址" placeholder="請輸入配送地址" value={form.address} onChange={(value) => updateForm("address", value)} />
+        <TextInput emoji="👤" label="訂購人 / 店名＊必填" placeholder="請輸入姓名或店名" value={form.customerName} onChange={(value) => updateForm("customerName", value)} />
+        <TextInput emoji="📞" label="聯絡電話＊必填" placeholder="請輸入手機或市話" value={form.phone} onChange={(value) => updateForm("phone", value)} />
+        <TextInput emoji="📍" label="配送地址＊必填" placeholder="請輸入配送地址" value={form.address} onChange={(value) => updateForm("address", value)} />
 
         <div>
           <label className="mb-2 block text-sm font-semibold text-slate-700">付款方式</label>
@@ -1396,8 +1401,19 @@ function CheckoutForm({ selectedItems, totalAmount, payment, setPayment, buttonC
             />
           </div>
         </div>
-
-        <PrimaryButton className={cx("w-full py-4 text-base", buttonClass)} type="submit">送出訂單</PrimaryButton>
+{!canSubmit && (
+  <p className="rounded-2xl bg-red-50 px-4 py-3 text-center text-sm font-bold text-red-600">
+    請先填寫訂購人、聯絡電話與配送地址，才能送出訂單。
+  </p>
+)}
+        <PrimaryButton
+  type="submit"
+  disabled={!canSubmit}
+  className={cx("w-full py-4 text-base", buttonClass)}
+>
+  
+  送出訂單
+</PrimaryButton>
         <GhostButton className="w-full" onClick={onBack}>返回修改品項</GhostButton>
       </form>
     </div>
