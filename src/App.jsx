@@ -1,19 +1,19 @@
 import React, { useEffect, useMemo, useState } from "react";
 
 const initialJuiceItems = [
-  { id: "juice-sugarcane", category: "juice", name: "甘蔗汁", price: 70, note: "天然清甜，清爽解膩", image: "/juice/sugarcane.jpg", active: true },
-  { id: "juice-passion", category: "juice", name: "百香果汁",  price: 120, note: "酸甜香氣明顯，適合調飲、甜點店", image: "/juice/passionfruit.jpg", active: true },
-  { id: "juice-guava", category: "juice", name: "芭樂汁", price: 80, note: "口感滑順，果香溫和", image: "/juice/guava.jpg", active: true },
-  { id: "juice-kumquat", category: "juice", name: "金桔汁", price: 90, note: "清新微酸，提神爽口", image: "/juice/kumquat.jpg", active: true },
-  { id: "juice-orange", category: "juice", name: "柳丁汁", price: 80, note: "經典清甜，餐飲常備款", image: "/juice/orange-sea.jpg", active: true },
-  { id: "juice-ponkan", category: "juice", name: "椪柑汁", price: 100, note: "柑橘香氣飽滿，酸甜順口", image: "/juice/ponkan.jpg", active: true },
-  { id: "juice-mango", category: "juice", name: "芒果汁", price: 100, note: "香甜濃厚，熱帶風味明顯", image: "/juice/mango.jpg", active: true },
-  { id: "juice-coconut", category: "juice", name: "椰子水", price: 90, note: "清透甘甜，清爽解渴", image: "/juice/coconut.jpg", active: true },
-  { id: "juice-grape", category: "juice", name: "葡萄汁", price: 110, note: "果香濃郁，口感飽滿", image: "/juice/grape.jpg", active: true },
-  { id: "juice-grapefruit", category: "juice", name: "葡萄柚汁", price: 100, note: "微苦回甘，清爽有層次", image: "/juice/grapefruit.jpg", active: true },
-  { id: "juice-pineapple", category: "juice", name: "鳳梨汁", price: 100, note: "酸甜明亮，熱帶系人氣款", image: "/juice/pineapple.jpg", active: true },
-  { id: "juice-ginger", category: "juice", name: "薑母汁", price: 145, note: "暖口辛香，冬季推薦", image: "/juice/ginger.jpg", active: true },
-  { id: "juice-lemon", category: "juice", name: "檸檬汁", price: 100, note: "酸香俐落，調飲百搭", image: "/juice/lime.jpg", active: true },
+  { id: "juice-sugarcane", category: "juice", name: "甘蔗汁", price: 70, note: "", image: "/juice/sugarcane.jpg", active: true },
+  { id: "juice-passion", category: "juice", name: "百香果汁",  price: 120, note: "", image: "/juice/passionfruit.jpg", active: true },
+  { id: "juice-guava", category: "juice", name: "芭樂汁", price: 80, note: "", image: "/juice/guava.jpg", active: true },
+  { id: "juice-kumquat", category: "juice", name: "金桔汁", price: 90, note: "", image: "/juice/kumquat.jpg", active: true },
+  { id: "juice-orange", category: "juice", name: "柳丁汁", price: 80, note: "", image: "/juice/orange-sea.jpg", active: true },
+  { id: "juice-ponkan", category: "juice", name: "椪柑汁", price: 100, note: "", image: "/juice/ponkan.jpg", active: true },
+  { id: "juice-mango", category: "juice", name: "芒果汁", price: 100, note: "", image: "/juice/mango.jpg", active: true },
+  { id: "juice-coconut", category: "juice", name: "椰子水", price: 90, note: "", image: "/juice/coconut.jpg", active: true },
+  { id: "juice-grape", category: "juice", name: "葡萄汁", price: 110, note: "", image: "/juice/grape.jpg", active: true },
+  { id: "juice-grapefruit", category: "juice", name: "葡萄柚汁", price: 100, note: "", image: "/juice/grapefruit.jpg", active: true },
+  { id: "juice-pineapple", category: "juice", name: "鳳梨汁", price: 100, note: "", image: "/juice/pineapple.jpg", active: true },
+  { id: "juice-ginger", category: "juice", name: "薑母汁", price: 145, note: "", image: "/juice/ginger.jpg", active: true },
+  { id: "juice-lemon", category: "juice", name: "檸檬汁", price: 100, note: "", image: "/juice/lime.jpg", active: true },
 ];
 
 const initialFruitItems = [
@@ -760,7 +760,7 @@ export default function FruitJuiceWholesaleOrderPage() {
             />
             <SectionEntry
               title="水果專區"
-              subtitle="部分商品無法宅配(常溫商品)"
+              subtitle="部份商品無法宅配(常溫商品)"
               emoji="🍎"
               className="border-lime-100 bg-gradient-to-br from-lime-50 to-orange-50"
               iconClass="bg-lime-100 text-lime-700"
