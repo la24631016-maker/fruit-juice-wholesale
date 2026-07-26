@@ -163,7 +163,7 @@ const initialFruitItems = [
   {
     id: "fruit-strawberry",
     category: "fruit",
-    name: "草莓",
+    name: "台灣草莓",
     spec: "1號 / 2號 / 3號 / 4號",
     price: 0,
     note: "每日時價，請加 LINE 詢問。",
@@ -398,7 +398,7 @@ const fruitSlides = [
     emoji: "🍌",
   },
   {
-    title: "草莓",
+    title: "台灣草莓",
     subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/strawberry.jpg",
     emoji: "🍓",
