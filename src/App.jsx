@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 
 const initialJuiceItems = [
+    { id: "juice-lemon", category: "juice", name: "檸檬汁", price: 100, note: "另有桶裝(20公升)", image: "/juice/lime.jpg", active: true },
   { id: "juice-sugarcane", category: "juice", name: "甘蔗汁", price: 70, note: "", image: "/juice/sugarcane.jpg", active: true },
   { id: "juice-passion", category: "juice", name: "百香果汁",  price: 120, note: "", image: "/juice/passionfruit.jpg", active: true },
   { id: "juice-guava", category: "juice", name: "芭樂汁", price: 80, note: "", image: "/juice/guava.jpg", active: true },
@@ -13,7 +14,6 @@ const initialJuiceItems = [
   { id: "juice-grapefruit", category: "juice", name: "葡萄柚汁", price: 100, note: "", image: "/juice/grapefruit.jpg", active: true },
   { id: "juice-pineapple", category: "juice", name: "鳳梨汁", price: 100, note: "", image: "/juice/pineapple.jpg", active: true },
   { id: "juice-ginger", category: "juice", name: "薑母汁", price: 145, note: "", image: "/juice/ginger.jpg", active: true },
-  { id: "juice-lemon", category: "juice", name: "檸檬汁", price: 100, note: "另有桶裝(20公升)", image: "/juice/lime.jpg", active: true },
 ];
 
 const initialFruitItems = [
