@@ -27,67 +27,67 @@ const initialFruitItems = [
 const juiceSlides = [
   {
     title: "甘蔗汁",
-    subtitle: "100%純天然｜無加水｜無加糖",
+    subtitle: "天然 無添加防腐劑",
     image: "/juice/sugarcane.jpg",
   },
   {
     title: "百香果汁（有籽）",
-    subtitle: "100%純天然｜無加水｜無加糖",
+    subtitle: "天然 無添加防腐劑",
     image: "/juice/passionfruit.jpg",
   },
   {
     title: "芭樂汁",
-    subtitle: "100%純天然｜無加水｜無加糖",
+    subtitle: "天然 無添加防腐劑",
     image: "/juice/guava.jpg",
   },
   {
     title: "金桔汁",
-    subtitle: "100%純天然｜無加水｜無加糖",
+    subtitle: "天然 無添加防腐劑",
     image: "/juice/kumquat.jpg",
   },
   {
     title: "柳丁汁",
-    subtitle: "100%純天然｜無加水｜無加糖",
+    subtitle: "天然 無添加防腐劑",
     image: "/juice/orange-sea.jpg",
   },
   {
     title: "椪柑汁",
-    subtitle: "100%純天然｜無加水｜無加糖",
+    subtitle: "天然 無添加防腐劑",
     image: "/juice/ponkan.jpg",
   },
   {
     title: "愛文芒果汁",
-    subtitle: "100%純天然｜無加水｜無加糖",
+    subtitle: "天然 無添加防腐劑",
     image: "/juice/mango.jpg",
   },
   {
     title: "椰子水",
-    subtitle: "100%純天然｜無加水｜無加糖",
+    subtitle: "天然 無添加防腐劑",
     image: "/juice/coconut.jpg",
   },
   {
     title: "葡萄汁",
-    subtitle: "100%純天然｜無加水｜無加糖",
+    subtitle: "天然 無添加防腐劑",
     image: "/juice/grape.jpg",
   },
   {
     title: "葡萄柚汁（有果肉）",
-    subtitle: "100%純天然｜無加水｜無加糖",
+    subtitle: "天然 無添加防腐劑",
     image: "/juice/grapefruit.jpg",
   },
   {
     title: "鳳梨汁",
-    subtitle: "100%純天然｜無加水｜無加糖",
+    subtitle: "天然 無添加防腐劑",
     image: "/juice/pineapple.jpg",
   },
   {
     title: "薑母汁",
-    subtitle: "100%純天然｜無加水｜無加糖",
+    subtitle: "天然 無添加防腐劑",
     image: "/juice/ginger.jpg",
   },
   {
     title: "檸檬汁",
-    subtitle: "100%純天然｜無加水｜無加糖",
+    subtitle: "天然 無添加防腐劑",
     image: "/juice/lime.jpg",
   },
 ];
