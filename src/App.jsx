@@ -95,127 +95,127 @@ const juiceSlides = [
 const fruitSlides = [
   {
     title: "椰子",
-    subtitle: "每日時價｜大量採購｜請加 LINE 詢問",
+    subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/coconut.jpg",
     emoji: "🥥",
   },
   {
     title: "台灣葡萄柚",
-    subtitle: "每日時價｜產地供貨｜請加 LINE 詢問",
+    subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/taiwan-grapefruit.jpg",
     emoji: "🍊",
   },
   {
     title: "進口葡萄柚",
-    subtitle: "每日時價｜進口水果｜請加 LINE 詢問",
+    subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/imported-grapefruit.jpg",
     emoji: "🍊",
   },
   {
     title: "台灣柳丁",
-    subtitle: "每日時價｜新鮮多汁｜請加 LINE 詢問",
+    subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/taiwan-orange.jpg",
     emoji: "🍊",
   },
   {
     title: "進口香吉士",
-    subtitle: "每日時價｜進口水果｜請加 LINE 詢問",
+    subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/imported-sunkist.jpg",
     emoji: "🍊",
   },
   {
     title: "檸檬 A 級",
-    subtitle: "每日時價｜分級供貨｜請加 LINE 詢問",
+    subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/lemon-a.jpg",
     emoji: "🍋",
   },
   {
     title: "檸檬 B 級",
-    subtitle: "每日時價｜分級供貨｜請加 LINE 詢問",
+    subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/lemon-b.jpg",
     emoji: "🍋",
   },
   {
     title: "金桔",
-    subtitle: "每日時價｜酸香鮮明｜請加 LINE 詢問",
+    subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/kumquat.jpg",
     emoji: "🍊",
   },
   {
     title: "進口蘋果",
-    subtitle: "每日時價｜進口水果｜請加 LINE 詢問",
+    subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/imported-apple.jpg",
     emoji: "🍎",
   },
   {
     title: "芭樂 A 級",
-    subtitle: "每日時價｜分級供貨｜請加 LINE 詢問",
+    subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/guava-a.jpg",
     emoji: "🍐",
   },
   {
     title: "芭樂 B 級",
-    subtitle: "每日時價｜分級供貨｜請加 LINE 詢問",
+    subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/guava-b.jpg",
     emoji: "🍐",
   },
   {
     title: "奇異果",
-    subtitle: "每日時價｜顆數計價｜請加 LINE 詢問",
+    subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/kiwi.jpg",
     emoji: "🥝",
   },
   {
     title: "山蕉",
-    subtitle: "每日時價｜產地供貨｜請加 LINE 詢問",
+    subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/mountain-banana.jpg",
     emoji: "🍌",
   },
   {
     title: "草莓",
-    subtitle: "1號 / 2號 / 3號 / 4號｜請加 LINE 詢問",
+    subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/strawberry.jpg",
     emoji: "🍓",
   },
   {
     title: "愛文芒果",
-    subtitle: "15顆 / 18顆 / 20顆 / 24顆｜請加 LINE 詢問",
+    subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/aiwen-mango.jpg",
     emoji: "🥭",
   },
   {
     title: "金鑽鳳梨",
-    subtitle: "每日時價｜香甜多汁｜請加 LINE 詢問",
+    subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/golden-pineapple.jpg",
     emoji: "🍍",
   },
   {
     title: "小番茄",
-    subtitle: "每日時價｜鮮甜爽口｜請加 LINE 詢問",
+    subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/cherry-tomato.jpg",
     emoji: "🍅",
   },
   {
     title: "白肉火龍果",
-    subtitle: "每日時價｜白肉品項｜請加 LINE 詢問",
+    subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/dragon-fruit-white.jpg",
     emoji: "🐉",
   },
   {
     title: "紅肉火龍果",
-    subtitle: "每日時價｜紅肉品項｜請加 LINE 詢問",
+    subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/dragon-fruit-red.jpg",
     emoji: "🐉",
   },
   {
     title: "紅肉木瓜",
-    subtitle: "每日時價｜顆數計價｜請加 LINE 詢問",
+    subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/red-papaya.jpg",
     emoji: "🟠",
   },
   {
     title: "西瓜",
-    subtitle: "每日時價｜顆數計價｜請加 LINE 詢問",
+    subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/watermelon.jpg",
     emoji: "🍉",
   },
@@ -352,7 +352,7 @@ export default function FruitJuiceWholesaleOrderPage() {
     },
     fruit: {
       title: "水果專區",
-      subtitle: "每日時價，請加 LINE 詢問。",
+      subtitle: "部分商品無法宅配",
       emoji: "🍎",
       pageBg: "bg-gradient-to-br from-lime-50 via-orange-50 to-white",
       chip: "bg-lime-50 text-lime-700 border-lime-100",
@@ -534,7 +534,7 @@ export default function FruitJuiceWholesaleOrderPage() {
             />
             <SectionEntry
               title="水果專區"
-              subtitle="每日時價，請加 LINE 詢問。"
+              subtitle="部分商品無法宅配"
               emoji="🍎"
               className="border-lime-100 bg-gradient-to-br from-lime-50 to-orange-50"
               iconClass="bg-lime-100 text-lime-700"
