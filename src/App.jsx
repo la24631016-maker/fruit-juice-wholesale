@@ -341,7 +341,7 @@ export default function FruitJuiceWholesaleOrderPage() {
   const sectionConfig = {
     juice: {
       title: "果汁專區",
-      subtitle: "100%純天然，無加水、無加糖，適合餐飲店家與團購批發。",
+      subtitle: "25罐可混搭，全台皆可配送。",
       emoji: "💧",
       pageBg: "bg-gradient-to-br from-cyan-50 via-emerald-50 to-white",
       chip: "bg-cyan-50 text-cyan-700 border-cyan-100",
@@ -524,7 +524,7 @@ export default function FruitJuiceWholesaleOrderPage() {
           <main className="grid gap-5 md:grid-cols-2">
             <SectionEntry
               title="果汁專區"
-              subtitle="天然  無添加防腐劑，無加水、無加糖，適合飲料店、餐飲、團購採購。"
+              subtitle="25罐可混搭，全台皆可配送。"
               emoji="💧"
               className="border-cyan-100 bg-gradient-to-br from-cyan-50 to-white"
               iconClass="bg-cyan-100 text-cyan-700"
