@@ -456,10 +456,10 @@ function formatCurrency(value) {
   }).format(value);
 }
 
-const LINE_OFFICIAL_ID = "@922grpau";
-const LINE_OFFICIAL_URL = "https://line.me/R/ti/p/%40922grpau";
+const LINE_OFFICIAL_ID = "0966369573";
+const LINE_OFFICIAL_URL = "https://line.me/ti/p/~0966369573";
 const LINE_QR_CODE_URL =
-  "https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=https%3A%2F%2Fline.me%2FR%2Fti%2Fp%2F%2540922grpau";
+  "https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=https%3A%2F%2Fline.me%2Fti%2Fp%2F~0966369573";
 
 const FACEBOOK_PAGE_URL = "https://www.facebook.com/profile.php?id=100057245148347";  
 function openLineFruitInquiry(item) {
