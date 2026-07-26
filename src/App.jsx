@@ -152,7 +152,7 @@ const initialFruitItems = [
   {
     id: "fruit-mountain-banana",
     category: "fruit",
-    name: "山蕉",
+    name: "香蕉",
     spec: "單位：斤",
     price: 0,
     note: "每日時價，請加 LINE 詢問。",
@@ -392,7 +392,7 @@ const fruitSlides = [
     emoji: "🥝",
   },
   {
-    title: "山蕉",
+    title: "香蕉",
     subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/mountain-banana.jpg",
     emoji: "🍌",
