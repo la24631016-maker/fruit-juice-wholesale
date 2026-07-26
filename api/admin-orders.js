@@ -40,12 +40,20 @@ function isAdminLoggedIn(req) {
   return true;
 }
 
+function cleanEnv(value) {
+  return String(value || "").trim();
+}
+
 function createSupabaseAdmin() {
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const supabaseUrl = cleanEnv(process.env.SUPABASE_URL);
+  const serviceKey = cleanEnv(process.env.SUPABASE_SERVICE_ROLE_KEY);
 
   if (!supabaseUrl || !serviceKey) {
-    throw new Error("Missing Supabase environment variables");
+    throw new Error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
+  }
+
+  if (!supabaseUrl.startsWith("https://")) {
+    throw new Error("SUPABASE_URL 格式錯誤，必須以 https:// 開頭");
   }
 
   return createClient(supabaseUrl, serviceKey, {
@@ -53,7 +61,26 @@ function createSupabaseAdmin() {
       autoRefreshToken: false,
       persistSession: false,
     },
+    global: {
+      headers: {
+        "x-application-name": "fruit-juice-wholesale-admin",
+      },
+    },
   });
+}
+
+function getErrorMessage(error) {
+  if (!error) return "Unknown error";
+
+  const causeMessage = error.cause?.message
+    ? `｜cause: ${error.cause.message}`
+    : "";
+
+  const errorCode = error.cause?.code
+    ? `｜code: ${error.cause.code}`
+    : "";
+
+  return `${error.message || String(error)}${causeMessage}${errorCode}`;
 }
 
 function normalizeOrder(order) {
@@ -161,10 +188,18 @@ export default async function handler(req, res) {
       message: "Method not allowed",
     });
   } catch (error) {
+    const message = getErrorMessage(error);
+
+    console.error("Admin orders API error:", {
+      message,
+      supabaseUrlExists: Boolean(process.env.SUPABASE_URL),
+      serviceKeyExists: Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY),
+      supabaseUrlStart: cleanEnv(process.env.SUPABASE_URL).slice(0, 35),
+    });
+
     return res.status(500).json({
       ok: false,
       message: "伺服器錯誤",
-      detail: error.message,
+      detail: message,
     });
   }
-}
