@@ -352,7 +352,7 @@ export default function FruitJuiceWholesaleOrderPage() {
     },
     fruit: {
       title: "水果專區",
-      subtitle: "部分商品無法宅配",
+      subtitle: "部分商品無法宅配(常溫商品)",
       emoji: "🍎",
       pageBg: "bg-gradient-to-br from-lime-50 via-orange-50 to-white",
       chip: "bg-lime-50 text-lime-700 border-lime-100",
@@ -534,7 +534,7 @@ export default function FruitJuiceWholesaleOrderPage() {
             />
             <SectionEntry
               title="水果專區"
-              subtitle="部分商品無法宅配"
+              subtitle="部分商品無法宅配(常溫商品)"
               emoji="🍎"
               className="border-lime-100 bg-gradient-to-br from-lime-50 to-orange-50"
               iconClass="bg-lime-100 text-lime-700"
