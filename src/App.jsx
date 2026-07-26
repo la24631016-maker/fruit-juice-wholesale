@@ -13,7 +13,7 @@ const initialJuiceItems = [
   { id: "juice-grapefruit", category: "juice", name: "葡萄柚汁", price: 100, note: "", image: "/juice/grapefruit.jpg", active: true },
   { id: "juice-pineapple", category: "juice", name: "鳳梨汁", price: 100, note: "", image: "/juice/pineapple.jpg", active: true },
   { id: "juice-ginger", category: "juice", name: "薑母汁", price: 145, note: "", image: "/juice/ginger.jpg", active: true },
-  { id: "juice-lemon", category: "juice", name: "檸檬汁", price: 100, note: "", image: "/juice/lime.jpg", active: true },
+  { id: "juice-lemon", category: "juice", name: "檸檬汁", price: 100, note: "另有桶裝(20公升)", image: "/juice/lime.jpg", active: true },
 ];
 
 const initialFruitItems = [
