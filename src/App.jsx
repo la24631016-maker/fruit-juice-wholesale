@@ -728,7 +728,7 @@ export default function FruitJuiceWholesaleOrderPage() {
                 Lei Meng Tang
               </p>
               <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">微酵檸檬農產行</h1>
-              <p className="mt-2 max-w-2xl text-slate-600">簡單選品、即時加總，結帳時再填寫訂購資料。</p>
+              <p className="mt-2 max-w-2xl text-slate-600">歡迎長期配合。</p>
             </div>
           </div>
 
