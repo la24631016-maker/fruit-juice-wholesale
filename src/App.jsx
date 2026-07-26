@@ -826,7 +826,6 @@ export default function FruitJuiceWholesaleOrderPage() {
                     )}
                   </div>
                 </div>
-                <GhostButton onClick={goHome}>← 回首頁</GhostButton>
               </div>
 
               {section === "juice" && <JuicePureNotice />}
@@ -844,6 +843,22 @@ export default function FruitJuiceWholesaleOrderPage() {
                     onSetQty={(value) => setQty(item.id, value)}
                   />
                 ))}
+              </div>
+
+              <div className="mt-8 rounded-[2rem] border border-white/80 bg-white/80 p-4 shadow-lg backdrop-blur">
+                <button
+                  type="button"
+                  onClick={goHome}
+                  className={cx(
+                    "flex w-full flex-col items-center justify-center gap-1 rounded-[1.5rem] px-6 py-5 text-center text-lg font-black text-white shadow-xl transition hover:-translate-y-0.5 sm:text-xl",
+                    section === "juice"
+                      ? "bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-700 hover:to-emerald-700"
+                      : "bg-gradient-to-r from-lime-600 to-emerald-600 hover:from-lime-700 hover:to-emerald-700"
+                  )}
+                >
+                  <span>← 回到首頁</span>
+                  <span className="text-sm font-bold text-white/90">繼續瀏覽果汁與水果專區</span>
+                </button>
               </div>
             </div>
 
