@@ -568,7 +568,7 @@ export default function FruitJuiceWholesaleOrderPage() {
     juice: {
       title: "果汁專區",
       subtitle: "果汁都可混搭，全台皆可配送。(冷凍商品)",
-      emoji: "💧",
+      emoji: "❄️,
       pageBg: "bg-gradient-to-br from-cyan-50 via-emerald-50 to-white",
       chip: "bg-cyan-50 text-cyan-700 border-cyan-100",
       accentText: "text-cyan-700",
