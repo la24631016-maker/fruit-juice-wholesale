@@ -567,7 +567,7 @@ export default function FruitJuiceWholesaleOrderPage() {
   const sectionConfig = {
     juice: {
       title: "果汁專區",
-      subtitle: "25罐可混搭，全台皆可配送。(冷凍商品)",
+      subtitle: "果汁都可混搭，全台皆可配送。(冷凍商品)",
       emoji: "💧",
       pageBg: "bg-gradient-to-br from-cyan-50 via-emerald-50 to-white",
       chip: "bg-cyan-50 text-cyan-700 border-cyan-100",
@@ -750,7 +750,7 @@ export default function FruitJuiceWholesaleOrderPage() {
           <main className="grid gap-5 md:grid-cols-2">
             <SectionEntry
               title="果汁專區"
-              subtitle="25罐可混搭，全台皆可配送。(冷凍商品)"
+              subtitle="果汁都可混搭，全台皆可配送。(冷凍商品)"
               emoji="💧"
               className="border-cyan-100 bg-gradient-to-br from-cyan-50 to-white"
               iconClass="bg-cyan-100 text-cyan-700"
