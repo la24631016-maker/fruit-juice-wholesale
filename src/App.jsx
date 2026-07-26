@@ -185,7 +185,7 @@ const initialFruitItems = [
   {
     id: "fruit-golden-pineapple",
     category: "fruit",
-    name: "金鑽鳳梨",
+    name: "鳳梨",
     spec: "單位：斤",
     price: 0,
     note: "每日時價，請加 LINE 詢問。",
@@ -410,7 +410,7 @@ const fruitSlides = [
     emoji: "🥭",
   },
   {
-    title: "金鑽鳳梨",
+    title: "鳳梨",
     subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/golden-pineapple.jpg",
     emoji: "🍍",
