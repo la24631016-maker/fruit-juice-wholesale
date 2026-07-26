@@ -434,7 +434,7 @@ const fruitSlides = [
     emoji: "🐉",
   },
   {
-    title: 木瓜",
+    title: "木瓜",
     subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/red-papaya.jpg",
     emoji: "🟠",
