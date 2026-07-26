@@ -267,49 +267,50 @@ export default async function handler(req, res) {
       0
     );
 
-    const supabase = createSupabaseAdmin();
-    const orderNo = createOrderNo();
-    const payment = body.payment || "貨到付款";
-    const note = body.note || "";
+const orderNo = createOrderNo();
+const payment = body.payment || "貨到付款";
+const note = body.note || "";
 
-    const { error } = await supabase
-      .from("orders")
-      .insert({
-        order_no: orderNo,
-        customer: {
-          name: customerName,
-          phone,
-          address,
-        },
-        items,
-        total: totalAmount,
-        total_qty: totalQty,
-        payment,
-        status: "待確認",
-        note,
-      });
+const orderPayload = {
+  orderNo,
+  customerName,
+  phone,
+  address,
+  payment,
+  note,
+  items,
+  totalQty,
+  totalAmount,
+};
 
-    if (error) {
-      console.error("Supabase insert error:", error);
+try {
+  const supabase = createSupabaseAdmin();
 
-      return res.status(500).json({
-        ok: false,
-        message: `訂單儲存失敗：${error.message}`,
-        detail: error.message,
-      });
-    }
-
-    const orderPayload = {
-      orderNo,
-      customerName,
-      phone,
-      address,
-      payment,
-      note,
+  const { error } = await supabase
+    .from("orders")
+    .insert({
+      order_no: orderNo,
+      customer: {
+        name: customerName,
+        phone,
+        address,
+      },
       items,
-      totalQty,
-      totalAmount,
-    };
+      total: totalAmount,
+      total_qty: totalQty,
+      payment,
+      status: "待確認",
+      note,
+    });
+
+  if (error) {
+    console.error("Supabase insert error, order will continue:", error);
+  } else {
+    console.log("Order saved to Supabase:", orderNo);
+  }
+} catch (supabaseError) {
+  console.error("Supabase unavailable, order will continue:", supabaseError);
+}
 
     try {
       await sendOrderEmail(orderPayload);
