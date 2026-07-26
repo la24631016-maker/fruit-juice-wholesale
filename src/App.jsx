@@ -352,7 +352,7 @@ export default function FruitJuiceWholesaleOrderPage() {
     },
     fruit: {
       title: "水果專區",
-      subtitle: "水果每日時價，網站不顯示固定售價，請加 LINE 詢問當日報價。",
+      subtitle: "每日時價，請加 LINE 詢問。",
       emoji: "🍎",
       pageBg: "bg-gradient-to-br from-lime-50 via-orange-50 to-white",
       chip: "bg-lime-50 text-lime-700 border-lime-100",
@@ -534,7 +534,7 @@ export default function FruitJuiceWholesaleOrderPage() {
             />
             <SectionEntry
               title="水果專區"
-              subtitle="水果每日盤價，網站不顯示固定售價；請加 LINE 詢問當日時價與配送方式。"
+              subtitle="每日時價，請加 LINE 詢問。"
               emoji="🍎"
               className="border-lime-100 bg-gradient-to-br from-lime-50 to-orange-50"
               iconClass="bg-lime-100 text-lime-700"
