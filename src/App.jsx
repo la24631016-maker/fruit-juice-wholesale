@@ -75,7 +75,7 @@ const initialFruitItems = [
   {
     id: "fruit-lemon-a",
     category: "fruit",
-    name: "檸檬 A 級",
+    name: "有籽檸檬 A 級",
     spec: "單位：斤",
     price: 0,
     note: "每日時價，請加 LINE 詢問。",
@@ -86,7 +86,7 @@ const initialFruitItems = [
   {
     id: "fruit-lemon-b",
     category: "fruit",
-    name: "檸檬 B 級",
+    name: "有籽檸檬 B 級",
     spec: "單位：斤",
     price: 0,
     note: "每日時價，請加 LINE 詢問。",
@@ -350,13 +350,13 @@ const fruitSlides = [
     emoji: "🍊",
   },
   {
-    title: "檸檬 A 級",
+    title: "有籽檸檬 A 級",
     subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/lemon-a.jpg",
     emoji: "🍋",
   },
   {
-    title: "檸檬 B 級",
+    title: "有籽檸檬 B 級",
     subtitle: "每日時價，請加 LINE 詢問。",
     image: "/fruit/lemon-b.jpg",
     emoji: "🍋",
