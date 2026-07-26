@@ -822,9 +822,6 @@ export default function FruitJuiceWholesaleOrderPage() {
                     <p className="mt-1 text-slate-600">{current.subtitle}</p>
                     {section === "juice" && (
                       <div className="mt-3 flex flex-wrap gap-2">
-                        <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-black text-emerald-800">100%純天然</span>
-                        <span className="rounded-full bg-cyan-100 px-3 py-1 text-xs font-black text-cyan-800">無加水</span>
-                        <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-black text-amber-800">無加糖</span>
                       </div>
                     )}
                   </div>
@@ -908,12 +905,9 @@ function JuicePureNotice() {
         <div>
           <p className="text-sm font-black text-emerald-700">OUR PROMISE</p>
           <h3 className="mt-1 text-2xl font-black text-slate-900">天然  無添加防腐劑</h3>
-          <p className="mt-2 text-sm font-bold text-slate-600">、無加糖，保留水果原本的香氣與風味。</p>
+          <p className="mt-2 text-sm font-bold text-slate-600"></p>
         </div>
         <div className="grid grid-cols-3 gap-2 text-center text-xs font-black sm:min-w-[260px]">
-          <div className="rounded-2xl bg-white p-3 text-emerald-700 shadow-sm">純天然</div>
-          <div className="rounded-2xl bg-white p-3 text-cyan-700 shadow-sm">無加水</div>
-          <div className="rounded-2xl bg-white p-3 text-amber-700 shadow-sm">無加糖</div>
         </div>
       </div>
     </div>
