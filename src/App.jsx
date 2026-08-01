@@ -568,7 +568,7 @@ export default function FruitJuiceWholesaleOrderPage() {
   const sectionConfig = {
     juice: {
       title: "果汁專區",
-      subtitle: "果汁都可混搭，全台皆可配送。(冷凍商品)",
+      subtitle: "果汁都可混搭，全台皆可配送。(冷凍商品)\n圖片僅供參考，以實際為主\n所有產品均已投保產品責任險",
       emoji: "❄️",
       pageBg: "bg-gradient-to-br from-cyan-50 via-emerald-50 to-white",
       chip: "bg-cyan-50 text-cyan-700 border-cyan-100",
@@ -579,7 +579,7 @@ export default function FruitJuiceWholesaleOrderPage() {
     },
     fruit: {
       title: "水果專區",
-      subtitle: "部分商品無法宅配(常溫商品)",
+      subtitle: "部分商品無法宅配(常溫商品)\n圖片僅供參考，以實際為主\n所有產品均已投保產品責任險",
       emoji: "🍎",
       pageBg: "bg-gradient-to-br from-lime-50 via-orange-50 to-white",
       chip: "bg-lime-50 text-lime-700 border-lime-100",
@@ -755,8 +755,8 @@ export default function FruitJuiceWholesaleOrderPage() {
           <main className="grid gap-5 md:grid-cols-2">
             <SectionEntry
               title="果汁專區"
-              subtitle="果汁都可混搭，全台皆可配送。(冷凍商品)"
-              emoji="💧"
+              subtitle={"果汁都可混搭，全台皆可配送。(冷凍商品)\n圖片僅供參考，以實際為主\n所有產品均已投保產品責任險"}
+              emoji="❄️"
               className="border-cyan-100 bg-gradient-to-br from-cyan-50 to-white"
               iconClass="bg-cyan-100 text-cyan-700"
               buttonClass="bg-cyan-600 hover:bg-cyan-700"
@@ -765,7 +765,7 @@ export default function FruitJuiceWholesaleOrderPage() {
             />
             <SectionEntry
               title="水果專區"
-              subtitle="部份商品無法宅配(常溫商品)"
+              subtitle={"部分商品無法宅配(常溫商品)\n圖片僅供參考，以實際為主\n所有產品均已投保產品責任險"}
               emoji="🍎"
               className="border-lime-100 bg-gradient-to-br from-lime-50 to-orange-50"
               iconClass="bg-lime-100 text-lime-700"
@@ -824,7 +824,7 @@ export default function FruitJuiceWholesaleOrderPage() {
                   <div className={cx("rounded-3xl p-4 text-3xl", current.soft)}>{current.emoji}</div>
                   <div>
                     <h2 className="text-2xl font-bold text-slate-900">{current.title}</h2>
-                    <p className="mt-1 text-slate-600">{current.subtitle}</p>
+                    <p className="mt-1 whitespace-pre-line text-slate-600">{current.subtitle}</p>
                     {section === "juice" && (
                       <div className="mt-3 flex flex-wrap gap-2">
                       </div>
@@ -1040,7 +1040,7 @@ function SectionEntry({ title, subtitle, emoji, className, iconClass, buttonClas
             <div className={cx("mb-5 inline-flex rounded-3xl p-4 text-4xl", iconClass)}>{emoji}</div>
           )}
           <h2 className="text-2xl font-bold text-slate-900">{title}</h2>
-          <p className="mt-3 leading-7 text-slate-600">{subtitle}</p>
+          <p className="mt-3 whitespace-pre-line leading-7 text-slate-600">{subtitle}</p>
         </div>
         <PrimaryButton className={cx("mt-8 py-4 text-base", buttonClass)} onClick={onClick}>
           進入{title}
